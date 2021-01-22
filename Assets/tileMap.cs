@@ -83,8 +83,9 @@ public class tileMap : MonoBehaviour
             for(int j = topLeftY; j < topLeftY + 2; j++)
             {
                 Vector3Int p = new Vector3Int(topLeftX-k, j-k, k * 5);
-                Vector3 temp = RotatePointAroundPivot(new Vector3Int(topLeftX-k, j-k, k*5), new Vector3Int(topLeftX, topLeftY, 0), new Vector3Int(0, 0, 90));
-                Vector3Int rotated = new Vector3Int((int)temp.x, (int)temp.y, (int)temp.z);
+                Vector3 temp = RotatePointAroundPivot(new Vector3Int(topLeftX, j, k*5), new Vector3Int(topLeftX, topLeftY, k*5), new Vector3Int(0, 0, 90));
+                Vector3 temp1 = RotatePointAroundPivot(new Vector3Int((int)temp.x, (int)temp.y, k*5), new Vector3Int(topLeftX, topLeftY, k * 5), new Vector3Int(0, 0, 90));
+                Vector3Int rotated = new Vector3Int((int)temp1.x-k, (int)temp1.y-k, (int)temp1.z);
                 test.SetTile(rotated, wall);
             }
         }
