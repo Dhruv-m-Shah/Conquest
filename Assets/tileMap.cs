@@ -9,6 +9,7 @@ public class tileMap : MonoBehaviour
     public Tile test1;
     public Tile brick;
     public Tile road;
+    public Tile wall;
     public Vector3Int prev;
     private bool _isBuildOpen = false;
     // Start is called before the first frame update
@@ -49,6 +50,7 @@ public class tileMap : MonoBehaviour
             for (int j = topLeftY; j < topLeftY + 2; j++)
             {
                 Vector3Int p = new Vector3Int(i-1, j-1, 4);
+                
                 test.SetTile(p, road);
                 
             }
@@ -66,8 +68,39 @@ public class tileMap : MonoBehaviour
             }
         }
     }
+    public Vector3 RotatePointAroundPivot(Vector3 point, Vector3 pivot, Vector3 angles)
+    {
+        Vector3 dir = point - pivot; // get point direction relative to pivot
+        dir = Quaternion.Euler(angles) * dir; // rotate it
+        point = dir + pivot; // calculate rotated point
+        return point; // return it
+    }
 
+    void buildWall(int topLeftX, int topLeftY)
+    {
+        for(int k = 1; k < 3; k++)
+        {
+            for(int j = topLeftY; j < topLeftY + 2; j++)
+            {
+                Vector3Int p = new Vector3Int(topLeftX-k, j-k, k * 5);
+                Vector3 temp = RotatePointAroundPivot(new Vector3Int(topLeftX-k, j-k, k*5), new Vector3Int(topLeftX, topLeftY, 0), new Vector3Int(0, 0, 90));
+                Vector3Int rotated = new Vector3Int((int)temp.x, (int)temp.y, (int)temp.z);
+                test.SetTile(rotated, wall);
+            }
+        }
+    }
 
+    void destroyWall(int topLeftX, int topLeftY)
+    {
+        for (int k = 1; k < 3; k++)
+        {
+            for (int j = topLeftY; j < topLeftY + 2; j++)
+            {
+                Vector3Int p = new Vector3Int(topLeftX-k, j-k, k * 5);
+                test.SetTile(p, null);
+            }
+        }
+    }
 
     void showBuildWindow()
     {
@@ -111,6 +144,7 @@ public class tileMap : MonoBehaviour
                 Vector3Int p = new Vector3Int(x, y, 0);
                 bool odd = (x + y) % 2 == 1;
                 Tile tile = test1;
+
                 test.SetTile(p, tile);
             }
         }
@@ -121,6 +155,8 @@ public class tileMap : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Vector3 test123 = RotatePointAroundPivot(new Vector3Int(1, 2, 0), new Vector3Int(0, 0, 0), new Vector3Int(0, 0, 90));
+        Debug.Log(test123);
         Vector3 point = GameObject.Find("Main Camera").GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition);
         Vector3Int selectedTile = test.WorldToCell(point);
         selectedTile.z += 10;
@@ -135,9 +171,9 @@ public class tileMap : MonoBehaviour
                 {
                     if (x == selectedTile.x && y == selectedTile.y)
                     {
-                        destroyRoad(prev.x, prev.y);
+                        destroyWall(prev.x, prev.y);
                         //buildHouse(x, y);
-                        buildRoad(x, y);
+                        buildWall(x, y);
                     }
                     else
                     {
