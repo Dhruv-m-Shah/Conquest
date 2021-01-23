@@ -11,10 +11,10 @@ public class tileMap : MonoBehaviour
     public Tile road;
     public Tile wall;
     public Vector3Int prev;
-    
     private bool _isBuildOpen = false;
     int direction = 0;
     string curObject = "house";
+    public CanvasGroup panel;
     // Start is called before the first frame update
     void buildHouse(int topLeftX, int topLeftY)
     {
@@ -119,15 +119,7 @@ public class tileMap : MonoBehaviour
 
     void showBuildWindow()
     {
-        Debug.Log("test");
-        GUI.color = new Color(1, 1, 1, 1); // back to solid
-        float width = GameObject.Find("Main Camera").GetComponent<Camera>().pixelWidth;
-        float height = GameObject.Find("Main Camera").GetComponent<Camera>().pixelHeight;
-        GUI.Box(new Rect(300, 20, width-600, height-250), "");
-        GUI.Box(new Rect(300, 20, width - 600, height - 250), "");
-        GUI.Box(new Rect(300, 20, width - 600, height - 250), "");
-        GUI.Box(new Rect(300, 20, width - 600, height - 250), "");
-        GUI.Box(new Rect(300, 20, width - 600, height - 250), "");
+        
     }
 
     void OnGUI()
@@ -151,6 +143,9 @@ public class tileMap : MonoBehaviour
     }
     void Start()
     {
+        CanvasGroup temp123 = GameObject.FindGameObjectWithTag("buildPanel").GetComponent<CanvasGroup>();
+        temp123.alpha = 0;
+        temp123.interactable = false;
         UnityEngine.UI.Button houseButton = GameObject.FindGameObjectWithTag("button").GetComponent<Button>();
         UnityEngine.UI.Button roadButton = GameObject.FindGameObjectWithTag("roadButton").GetComponent<Button>();
         UnityEngine.UI.Button wallButton = GameObject.FindGameObjectWithTag("wallButton").GetComponent<Button>();

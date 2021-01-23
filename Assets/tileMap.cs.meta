@@ -3,7 +3,13 @@ guid: 3f2eb1497e6495845bb666fbd8f8464c
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - test: {instanceID: 0}
+  - test1: {instanceID: 0}
+  - brick: {fileID: 11400000, guid: 55bd802058c44fb4eb65abd7c186906c, type: 2}
+  - road: {instanceID: 0}
+  - wall: {instanceID: 0}
+  - panel: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
