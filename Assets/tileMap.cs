@@ -11,6 +11,7 @@ public class tileMap : MonoBehaviour
     public Tile road;
     public Tile wall;
     public Vector3Int prev;
+    
     private bool _isBuildOpen = false;
     int direction = 0;
     string curObject = "house";
@@ -134,7 +135,6 @@ public class tileMap : MonoBehaviour
         GUI.color = new Color(1, 1, 1, 1); // back to solid
         float width = GameObject.Find("Main Camera").GetComponent<Camera>().pixelWidth;
         float height = GameObject.Find("Main Camera").GetComponent<Camera>().pixelHeight;
-        GUI.Box(new Rect(0, height - 200, width, 200), "");
         if (GUI.Button(new Rect(50, height - 125, 100, 50), "Build"))
         {
             _isBuildOpen = !_isBuildOpen;
@@ -143,11 +143,15 @@ public class tileMap : MonoBehaviour
         {
             showBuildWindow();
         }
-        GUI.Button(new Rect(200, height - 125, 100, 50), "End Turn");
-        GUI.Button(new Rect(350, height - 125, 100, 50), "Quit Game");
+    }
+    void TaskOnClick()
+    {
+        curObject = "road";
     }
     void Start()
     {
+        UnityEngine.UI.Button houseButton = GameObject.FindGameObjectWithTag("button").GetComponent<Button>();
+        houseButton.onClick.AddListener(TaskOnClick);
         prev = new Vector3Int(0, 0, 0);
         GameObject.Find("Main Camera").transform.position = new Vector3(10, 11.5f, -10);
         GameObject.Find("Main Camera").GetComponent<Camera>().orthographicSize = 14;
