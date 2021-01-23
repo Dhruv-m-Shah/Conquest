@@ -144,14 +144,19 @@ public class tileMap : MonoBehaviour
             showBuildWindow();
         }
     }
-    void TaskOnClick()
+    void TaskOnClick(string buildingType, Vector3Int prev)
     {
-        curObject = "road";
+        destroyObject(prev.x, prev.y);
+        curObject = buildingType;
     }
     void Start()
     {
         UnityEngine.UI.Button houseButton = GameObject.FindGameObjectWithTag("button").GetComponent<Button>();
-        houseButton.onClick.AddListener(TaskOnClick);
+        UnityEngine.UI.Button roadButton = GameObject.FindGameObjectWithTag("roadButton").GetComponent<Button>();
+        UnityEngine.UI.Button wallButton = GameObject.FindGameObjectWithTag("wallButton").GetComponent<Button>();
+        houseButton.onClick.AddListener(() => TaskOnClick("house", prev));
+        roadButton.onClick.AddListener(() => TaskOnClick("road", prev));
+        wallButton.onClick.AddListener(() => TaskOnClick("wall", prev));
         prev = new Vector3Int(0, 0, 0);
         GameObject.Find("Main Camera").transform.position = new Vector3(10, 11.5f, -10);
         GameObject.Find("Main Camera").GetComponent<Camera>().orthographicSize = 14;
