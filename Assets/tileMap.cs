@@ -12,6 +12,7 @@ public class tileMap : MonoBehaviour
     public Tile wall;
     public Vector3Int prev;
     private bool _isBuildOpen = false;
+    int direction = 0;
     // Start is called before the first frame update
     void buildHouse(int topLeftX, int topLeftY)
     {
@@ -70,9 +71,12 @@ public class tileMap : MonoBehaviour
     }
     public Vector3 RotatePointAroundPivot(Vector3 point, Vector3 pivot, Vector3 angles)
     {
-        Vector3 dir = point - pivot; // get point direction relative to pivot
-        dir = Quaternion.Euler(angles) * dir; // rotate it
-        point = dir + pivot; // calculate rotated point
+        for (int i = 0; i < direction + 1; i++)
+        {
+            Vector3 dir = point - pivot; // get point direction relative to pivot
+            dir = Quaternion.Euler(angles) * dir; // rotate it
+            point = dir + pivot; // calculate rotated point
+        }
         return point; // return it
     }
 
@@ -84,8 +88,7 @@ public class tileMap : MonoBehaviour
             {
                 Vector3Int p = new Vector3Int(topLeftX-k, j-k, k * 5);
                 Vector3 temp = RotatePointAroundPivot(new Vector3Int(topLeftX, j, k*5), new Vector3Int(topLeftX, topLeftY, k*5), new Vector3Int(0, 0, 90));
-                Vector3 temp1 = RotatePointAroundPivot(new Vector3Int((int)temp.x, (int)temp.y, k*5), new Vector3Int(topLeftX, topLeftY, k * 5), new Vector3Int(0, 0, 90));
-                Vector3Int rotated = new Vector3Int((int)temp1.x-k, (int)temp1.y-k, (int)temp1.z);
+                Vector3Int rotated = new Vector3Int((int)temp.x-k, (int)temp.y-k, (int)temp.z);
                 test.SetTile(rotated, wall);
             }
         }
@@ -97,8 +100,10 @@ public class tileMap : MonoBehaviour
         {
             for (int j = topLeftY; j < topLeftY + 2; j++)
             {
-                Vector3Int p = new Vector3Int(topLeftX-k, j-k, k * 5);
-                test.SetTile(p, null);
+                Vector3Int p = new Vector3Int(topLeftX - k, j - k, k * 5);
+                Vector3 temp = RotatePointAroundPivot(new Vector3Int(topLeftX, j, k * 5), new Vector3Int(topLeftX, topLeftY, k * 5), new Vector3Int(0, 0, 90));
+                Vector3Int rotated = new Vector3Int((int)temp.x - k, (int)temp.y - k, (int)temp.z);
+                test.SetTile(rotated, null);
             }
         }
     }
@@ -156,6 +161,12 @@ public class tileMap : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown("space"))
+        {
+            destroyWall(prev.x, prev.y);
+            direction = (direction + 1) % 4;
+        }
+
         Vector3 test123 = RotatePointAroundPivot(new Vector3Int(1, 2, 0), new Vector3Int(0, 0, 0), new Vector3Int(0, 0, 90));
         Debug.Log(test123);
         Vector3 point = GameObject.Find("Main Camera").GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition);

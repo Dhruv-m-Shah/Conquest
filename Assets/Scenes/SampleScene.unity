@@ -424,6 +424,7 @@ MonoBehaviour:
   test1: {fileID: 11400000, guid: d1984a15cdcf36849b71050de14dd0ca, type: 2}
   brick: {fileID: 11400000, guid: 46792a9d948a09645bfcb6554586c5f2, type: 2}
   road: {fileID: 11400000, guid: ea1ab2b2a9b49cf4cbe5178c455ddfab, type: 2}
+  wall: {fileID: 11400000, guid: 774695c28d73642419db58e48309ffdd, type: 2}
   prev: {x: 0, y: 0, z: 0}
 --- !u!114 &588284623
 MonoBehaviour:
