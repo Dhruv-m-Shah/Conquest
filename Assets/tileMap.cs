@@ -13,6 +13,7 @@ public class tileMap : MonoBehaviour
     public Vector3Int prev;
     private bool _isBuildOpen = false;
     int direction = 0;
+    string curObject = "house";
     // Start is called before the first frame update
     void buildHouse(int topLeftX, int topLeftY)
     {
@@ -23,7 +24,9 @@ public class tileMap : MonoBehaviour
                 for(int j = topLeftY; j < topLeftY + 3; j++)
                 {
                     Vector3Int p = new Vector3Int(i-k, j-k, k*5);
-                    test.SetTile(p, brick);
+                    Vector3 temp = RotatePointAroundPivot(new Vector3Int(i, j, k * 5), new Vector3Int(topLeftX, topLeftY, k * 5), new Vector3Int(0, 0, 90));
+                    Vector3Int rotated = new Vector3Int((int)temp.x - k, (int)temp.y - k, (int)temp.z);
+                    test.SetTile(rotated, brick);
                 }
             }
         }
@@ -38,7 +41,9 @@ public class tileMap : MonoBehaviour
                 for (int j = topLeftY; j < topLeftY + 3; j++)
                 {
                     Vector3Int p = new Vector3Int(i - k, j - k, k * 5);
-                    test.SetTile(p, null);
+                    Vector3 temp = RotatePointAroundPivot(new Vector3Int(i, j, k * 5), new Vector3Int(topLeftX, topLeftY, k * 5), new Vector3Int(0, 0, 90));
+                    Vector3Int rotated = new Vector3Int((int)temp.x - k, (int)temp.y - k, (int)temp.z);
+                    test.SetTile(rotated, null);
                 }
             }
         }
@@ -51,9 +56,9 @@ public class tileMap : MonoBehaviour
             for (int j = topLeftY; j < topLeftY + 2; j++)
             {
                 Vector3Int p = new Vector3Int(i-1, j-1, 4);
-                
-                test.SetTile(p, road);
-                
+                Vector3 temp = RotatePointAroundPivot(new Vector3Int(i, j, 4), new Vector3Int(topLeftX, topLeftY, 4), new Vector3Int(0, 0, 90));
+                Vector3Int rotated = new Vector3Int((int)temp.x, (int)temp.y, (int)temp.z);
+                test.SetTile(rotated, road);
             }
         }
     }
@@ -64,11 +69,14 @@ public class tileMap : MonoBehaviour
         {
             for (int j = topLeftY; j < topLeftY + 2; j++)
             {
-                Vector3Int p = new Vector3Int(i-1, j-1, 4);
-                test.SetTile(p, null);
+                Vector3Int p = new Vector3Int(i - 1, j - 1, 4);
+                Vector3 temp = RotatePointAroundPivot(new Vector3Int(i, j, 4), new Vector3Int(topLeftX, topLeftY, 4), new Vector3Int(0, 0, 90));
+                Vector3Int rotated = new Vector3Int((int)temp.x, (int)temp.y, (int)temp.z);
+                test.SetTile(rotated, null);
             }
         }
     }
+
     public Vector3 RotatePointAroundPivot(Vector3 point, Vector3 pivot, Vector3 angles)
     {
         for (int i = 0; i < direction + 1; i++)
@@ -158,12 +166,44 @@ public class tileMap : MonoBehaviour
         test.SetTileFlags(temp, TileFlags.None);
         test.SetColor(temp, Color.red);
     }
+
+    void buildObject(int xpos, int ypos)
+    {
+        if(curObject == "wall")
+        {
+            buildWall(xpos, ypos);
+        }
+        else if(curObject == "road")
+        {
+            buildRoad(xpos, ypos);
+        }
+        else if(curObject == "house")
+        {
+            buildHouse(xpos, ypos);
+        }
+    }
+
+    void destroyObject(int xpos, int ypos)
+    {
+        if (curObject == "wall")
+        {
+            destroyWall(xpos, ypos);
+        }
+        else if (curObject == "road")
+        {
+            destroyRoad(xpos, ypos);
+        }
+        else if (curObject == "house")
+        {
+            destroyHouse(xpos, ypos);
+        }
+    }
     // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown("space"))
         {
-            destroyWall(prev.x, prev.y);
+            destroyObject(prev.x, prev.y);
             direction = (direction + 1) % 4;
         }
 
@@ -183,9 +223,10 @@ public class tileMap : MonoBehaviour
                 {
                     if (x == selectedTile.x && y == selectedTile.y)
                     {
-                        destroyWall(prev.x, prev.y);
+                        
+                        destroyObject(prev.x, prev.y);
                         //buildHouse(x, y);
-                        buildWall(x, y);
+                        buildObject(x, y);
                     }
                     else
                     {
