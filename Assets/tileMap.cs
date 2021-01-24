@@ -16,7 +16,7 @@ public class tileMap : MonoBehaviour
     int direction = 0;
     string curObject = "house";
     public CanvasGroup panel;
-    //test
+    //test123
     // Start is called before the first frame update
     void buildHouse(int topLeftX, int topLeftY)
     {
