@@ -11,6 +11,8 @@ TagManager:
   - buildButton
   - closeBuildButton
   - createGame
+  - createGameButton
+  - createGameButton1
   layers:
   - Default
   - TransparentFX

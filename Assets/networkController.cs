@@ -3,18 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Realtime;
+using UnityEngine.UI;
 
 
 public class networkController : MonoBehaviourPunCallbacks
 {
     string gameVersion = "1";
+    public Text createGameField;
     //private RoomInfo[] roomsList;
     // Start is called before the first frame update
     void Awake()
     {
         // #Critical
         // this makes sure we can use PhotonNetwork.LoadLevel() on the master client and all clients in the same room sync their level automatically
-       //PhotonNetwork.AutomaticallySyncScene = true;
+       //PhotonNetwork.AutomaticallySyncScene = true;s
     }
 
     public void Connect()
@@ -22,18 +24,11 @@ public class networkController : MonoBehaviourPunCallbacks
         PhotonNetwork.ConnectUsingSettings();
         PhotonNetwork.GameVersion = gameVersion;
     }
-    void Start()
-    {
-        PhotonNetwork.ConnectUsingSettings();
-        UnityEngine.UI.Button createGame = GameObject.FindGameObjectWithTag("createGameButton").GetComponent<Button>();
-        createGameButton.onClick.AddListener(() => createGameButton());
-        //Connect();
-    }
 
-    public override void OnConnectedToMaster()
+    void createGame()
     {
-        Debug.Log("We are now connected to the " + PhotonNetwork.CloudRegion + " server!");
-        PhotonNetwork.CreateRoom("assadads",
+        UnityEngine.UI.InputField inputFieldGameName = GameObject.FindGameObjectWithTag("inputFieldGameName").GetComponent<InputField>();
+        PhotonNetwork.CreateRoom(inputFieldGameName.text,
         new RoomOptions()
         {
             MaxPlayers = 2,
@@ -42,18 +37,31 @@ public class networkController : MonoBehaviourPunCallbacks
             PlayerTtl = 0,
             EmptyRoomTtl = 0
         }, null);
+    }
+    void Start()
+    {
+        PhotonNetwork.ConnectUsingSettings();
+        UnityEngine.UI.Button createGameButton1 = GameObject.FindGameObjectWithTag("createGameButton1").GetComponent<Button>();
+        createGameButton1.onClick.AddListener(() => createGame());
+        //Connect();
+    }
+
+    public override void OnConnectedToMaster()
+    {
+        Debug.Log("We are now connected to the " + PhotonNetwork.CloudRegion + " server!");
+        
         //roomsList = PhotonNetwork.GetRoomList();
 
     }
 
     public override void OnCreatedRoom()
     {
-        Debug.Log("TEST123");
+        
     }
 
     public override void OnJoinedRoom()
     {
-        Debug.Log("test");
+        
     }
 
     public override void OnJoinRandomFailed(short returnCode, string message)
