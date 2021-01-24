@@ -25,6 +25,8 @@ public class networkController : MonoBehaviourPunCallbacks
     void Start()
     {
         PhotonNetwork.ConnectUsingSettings();
+        UnityEngine.UI.Button createGame = GameObject.FindGameObjectWithTag("createGameButton").GetComponent<Button>();
+        createGameButton.onClick.AddListener(() => createGameButton());
         //Connect();
     }
 
