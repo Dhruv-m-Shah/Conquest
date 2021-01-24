@@ -1107,6 +1107,7 @@ MonoBehaviour:
   road: {fileID: 11400000, guid: ea1ab2b2a9b49cf4cbe5178c455ddfab, type: 2}
   wall: {fileID: 11400000, guid: 774695c28d73642419db58e48309ffdd, type: 2}
   prev: {x: 0, y: 0, z: 0}
+  panel: {fileID: 0}
 --- !u!114 &588284623
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1305,7 +1306,7 @@ GameObject:
   - component: {fileID: 837342767}
   m_Layer: 5
   m_Name: Button (5)
-  m_TagString: Untagged
+  m_TagString: closeBuildButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1750,7 +1751,7 @@ GameObject:
   - component: {fileID: 1300457879}
   m_Layer: 5
   m_Name: Build
-  m_TagString: Untagged
+  m_TagString: buildButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

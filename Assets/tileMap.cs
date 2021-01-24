@@ -11,6 +11,7 @@ public class tileMap : MonoBehaviour
     public Tile road;
     public Tile wall;
     public Vector3Int prev;
+    CanvasGroup buildWindow;
     private bool _isBuildOpen = false;
     int direction = 0;
     string curObject = "house";
@@ -119,7 +120,14 @@ public class tileMap : MonoBehaviour
 
     void showBuildWindow()
     {
-        
+        buildWindow.alpha = 1;
+        buildWindow.interactable = true;
+    }
+
+    void closeBuildWindow()
+    {
+        buildWindow.alpha = 0;
+        buildWindow.interactable = false;
     }
 
     void OnGUI()
@@ -127,14 +135,6 @@ public class tileMap : MonoBehaviour
         GUI.color = new Color(1, 1, 1, 1); // back to solid
         float width = GameObject.Find("Main Camera").GetComponent<Camera>().pixelWidth;
         float height = GameObject.Find("Main Camera").GetComponent<Camera>().pixelHeight;
-        if (GUI.Button(new Rect(50, height - 125, 100, 50), "Build"))
-        {
-            _isBuildOpen = !_isBuildOpen;
-        };
-        if (_isBuildOpen)
-        {
-            showBuildWindow();
-        }
     }
     void TaskOnClick(string buildingType, Vector3Int prev)
     {
@@ -143,12 +143,17 @@ public class tileMap : MonoBehaviour
     }
     void Start()
     {
-        CanvasGroup temp123 = GameObject.FindGameObjectWithTag("buildPanel").GetComponent<CanvasGroup>();
-        temp123.alpha = 0;
-        temp123.interactable = false;
+        buildWindow = GameObject.FindGameObjectWithTag("buildPanel").GetComponent<CanvasGroup>();
+        buildWindow.alpha = 0;
+        buildWindow.interactable = false;
         UnityEngine.UI.Button houseButton = GameObject.FindGameObjectWithTag("button").GetComponent<Button>();
         UnityEngine.UI.Button roadButton = GameObject.FindGameObjectWithTag("roadButton").GetComponent<Button>();
         UnityEngine.UI.Button wallButton = GameObject.FindGameObjectWithTag("wallButton").GetComponent<Button>();
+        UnityEngine.UI.Button buildButton = GameObject.FindGameObjectWithTag("buildButton").GetComponent<Button>();
+        UnityEngine.UI.Button closeBuildButton = GameObject.FindGameObjectWithTag("closeBuildButton").GetComponent<Button>();
+        //asdasd
+        closeBuildButton.onClick.AddListener(() => closeBuildWindow());
+        buildButton.onClick.AddListener(() => showBuildWindow());
         houseButton.onClick.AddListener(() => TaskOnClick("house", prev));
         roadButton.onClick.AddListener(() => TaskOnClick("road", prev));
         wallButton.onClick.AddListener(() => TaskOnClick("wall", prev));

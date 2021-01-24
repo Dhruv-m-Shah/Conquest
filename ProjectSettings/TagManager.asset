@@ -8,6 +8,8 @@ TagManager:
   - roadButton
   - wallButton
   - buildPanel
+  - buildButton
+  - closeBuildButton
   layers:
   - Default
   - TransparentFX
