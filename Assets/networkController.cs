@@ -16,7 +16,7 @@ public class networkController : MonoBehaviourPunCallbacks
     {
         // #Critical
         // this makes sure we can use PhotonNetwork.LoadLevel() on the master client and all clients in the same room sync their level automatically
-       //PhotonNetwork.AutomaticallySyncScene = true;s
+       //PhotonNetwork.AutomaticallySyncScene = true;
     }
 
 
@@ -44,8 +44,6 @@ public class networkController : MonoBehaviourPunCallbacks
     public override void OnConnectedToMaster()
     {
         Debug.Log("We are now connected to the " + PhotonNetwork.CloudRegion + " server!");
-        
-        //roomsList = PhotonNetwork.GetRoomList();
 
     }
 
@@ -56,7 +54,7 @@ public class networkController : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
-        //SceneManager.LoadScene(sceneName: "Scenes/SampleScene");
+        SceneManager.LoadScene(sceneName: "Scenes/SampleScene");
         Debug.Log("Joined");
         
     }

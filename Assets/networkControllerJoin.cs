@@ -38,7 +38,7 @@ public class networkControllerJoin : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log("JOINED A ROOM!!");
-        //SceneManager.LoadScene(sceneName: "Scenes/SampleScene");
+        SceneManager.LoadScene(sceneName: "Scenes/SampleScene");
 
     }
 }

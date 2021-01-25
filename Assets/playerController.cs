@@ -18,15 +18,32 @@ public class Players
     int gold = 100;
     int stone = 100;
     // Base stats;
+    HashSet<Vector3Int> taken;
     public Players(string id)
     {
         playerId = id;
     }
+    public bool inHashSet(Vector3Int point)
+    {
+        return this.taken.Contains(point);
+    }
+    public bool addInHashSet(Vector3Int point)
+    {
+        if (this.taken.Contains(point)) return false;
+        this.taken.Add(point);
+        return true;
+    }
 }
+
 
 public class playerController : MonoBehaviour
 {
+    Players player;
     // Start is called before the first frame update
+    bool addPoint(Vector3Int point)
+    {
+        return player.addInHashSet(point);
+    }
     void Start()
     {
         Game game = new Game();
