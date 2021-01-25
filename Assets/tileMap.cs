@@ -11,6 +11,7 @@ public class tileMap : MonoBehaviour
     public Tile road;
     public Tile wall;
     public Vector3Int prev;
+    public playerController other;
     CanvasGroup buildWindow;
     private bool _isBuildOpen = false;
     int direction = 0;
@@ -208,7 +209,7 @@ public class tileMap : MonoBehaviour
             destroyHouse(xpos, ypos);
         }
     }
-    // Update is called once per frame
+    // Update is called once per frame.
     void Update()
     {
         if (Input.GetKeyDown("space"))
@@ -225,6 +226,10 @@ public class tileMap : MonoBehaviour
         selectedTile.x -= 6;
         selectedTile.y -= 6;
         test.SetTileFlags(selectedTile, TileFlags.None);
+        if (Input.GetMouseButtonDown(0))
+        {
+            other.addPoint(selectedTile);
+        }
         if (selectedTile.x < 50 && selectedTile.x >= 0 && selectedTile.y < 50 && selectedTile.y >= 0)
         {
             for (int x = 0; x < 50; x++)

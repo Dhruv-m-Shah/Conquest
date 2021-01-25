@@ -19,9 +19,11 @@ public class Players
     int stone = 100;
     // Base stats;
     HashSet<Vector3Int> taken;
+    
     public Players(string id)
     {
         playerId = id;
+        taken = new HashSet<Vector3Int>();
     }
     public bool inHashSet(Vector3Int point)
     {
@@ -29,8 +31,8 @@ public class Players
     }
     public bool addInHashSet(Vector3Int point)
     {
-        if (this.taken.Contains(point)) return false;
-        this.taken.Add(point);
+        if (taken.Contains(point)) return false;
+        taken.Add(point);
         return true;
     }
 }
@@ -40,14 +42,14 @@ public class playerController : MonoBehaviour
 {
     Players player;
     // Start is called before the first frame update
-    bool addPoint(Vector3Int point)
+    public bool addPoint(Vector3Int point)
     {
         return player.addInHashSet(point);
     }
     void Start()
     {
         Game game = new Game();
-        Players player = new Players("player1");
+        player = new Players("player1");
         game.setPlayer(player);
     }
 

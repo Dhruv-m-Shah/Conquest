@@ -1153,6 +1153,7 @@ MonoBehaviour:
   road: {fileID: 11400000, guid: ea1ab2b2a9b49cf4cbe5178c455ddfab, type: 2}
   wall: {fileID: 11400000, guid: 774695c28d73642419db58e48309ffdd, type: 2}
   prev: {x: 0, y: 0, z: 0}
+  other: {fileID: 71527923}
   panel: {fileID: 0}
 --- !u!114 &588284623
 MonoBehaviour:
