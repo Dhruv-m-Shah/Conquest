@@ -13,6 +13,9 @@ TagManager:
   - createGame
   - createGameButton
   - createGameButton1
+  - inputFieldGameName
+  - joinGameButton
+  - joinGame
   layers:
   - Default
   - TransparentFX

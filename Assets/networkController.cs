@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Realtime;
 using UnityEngine.UI;
-
+using UnityEngine.SceneManagement;
 
 public class networkController : MonoBehaviourPunCallbacks
 {
@@ -19,11 +19,6 @@ public class networkController : MonoBehaviourPunCallbacks
        //PhotonNetwork.AutomaticallySyncScene = true;s
     }
 
-    public void Connect()
-    {
-        PhotonNetwork.ConnectUsingSettings();
-        PhotonNetwork.GameVersion = gameVersion;
-    }
 
     void createGame()
     {
@@ -61,7 +56,13 @@ public class networkController : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
+        //SceneManager.LoadScene(sceneName: "Scenes/SampleScene");
+        Debug.Log("Joined");
         
+    }
+    public override void OnPlayerEnteredRoom(Player other)
+    {
+        Debug.Log("entered Room");
     }
 
     public override void OnJoinRandomFailed(short returnCode, string message)
