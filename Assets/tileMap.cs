@@ -19,7 +19,7 @@ public class tileMap : MonoBehaviour
     public CanvasGroup panel;
     //test123
     // Start is called before the first frame update
-    void buildHouse(int topLeftX, int topLeftY)
+    void buildHouse(int topLeftX, int topLeftY, bool onClick=false)
     {
         for(int k = 1; k < 3; k++)
         {
@@ -30,6 +30,7 @@ public class tileMap : MonoBehaviour
                     Vector3Int p = new Vector3Int(i-k, j-k, k*5);
                     Vector3 temp = RotatePointAroundPivot(new Vector3Int(i, j, k * 5), new Vector3Int(topLeftX, topLeftY, k * 5), new Vector3Int(0, 0, 90));
                     Vector3Int rotated = new Vector3Int((int)temp.x - k, (int)temp.y - k, (int)temp.z);
+                    if (onClick) other.addPoint(rotated);
                     test.SetTile(rotated, brick);
                 }
             }
@@ -47,13 +48,14 @@ public class tileMap : MonoBehaviour
                     Vector3Int p = new Vector3Int(i - k, j - k, k * 5);
                     Vector3 temp = RotatePointAroundPivot(new Vector3Int(i, j, k * 5), new Vector3Int(topLeftX, topLeftY, k * 5), new Vector3Int(0, 0, 90));
                     Vector3Int rotated = new Vector3Int((int)temp.x - k, (int)temp.y - k, (int)temp.z);
+                    if (other.inHashSet(rotated)) continue;
                     test.SetTile(rotated, null);
                 }
             }
         }
     }
 
-    void buildRoad(int topLeftX, int topLeftY)
+    void buildRoad(int topLeftX, int topLeftY, bool onClick=false)
     {
         for (int i = topLeftX; i < topLeftX + 2; i++)
         {
@@ -62,6 +64,7 @@ public class tileMap : MonoBehaviour
                 Vector3Int p = new Vector3Int(i-1, j-1, 4);
                 Vector3 temp = RotatePointAroundPivot(new Vector3Int(i, j, 4), new Vector3Int(topLeftX, topLeftY, 4), new Vector3Int(0, 0, 90));
                 Vector3Int rotated = new Vector3Int((int)temp.x, (int)temp.y, (int)temp.z);
+                if (onClick) other.addPoint(rotated);
                 test.SetTile(rotated, road);
             }
         }
@@ -76,6 +79,7 @@ public class tileMap : MonoBehaviour
                 Vector3Int p = new Vector3Int(i - 1, j - 1, 4);
                 Vector3 temp = RotatePointAroundPivot(new Vector3Int(i, j, 4), new Vector3Int(topLeftX, topLeftY, 4), new Vector3Int(0, 0, 90));
                 Vector3Int rotated = new Vector3Int((int)temp.x, (int)temp.y, (int)temp.z);
+                if (other.inHashSet(rotated)) continue;
                 test.SetTile(rotated, null);
             }
         }
@@ -92,7 +96,7 @@ public class tileMap : MonoBehaviour
         return point; // return it
     }
 
-    void buildWall(int topLeftX, int topLeftY)
+    void buildWall(int topLeftX, int topLeftY, bool onClick=false)
     {
         for(int k = 1; k < 3; k++)
         {
@@ -101,6 +105,7 @@ public class tileMap : MonoBehaviour
                 Vector3Int p = new Vector3Int(topLeftX-k, j-k, k * 5);
                 Vector3 temp = RotatePointAroundPivot(new Vector3Int(topLeftX, j, k*5), new Vector3Int(topLeftX, topLeftY, k*5), new Vector3Int(0, 0, 90));
                 Vector3Int rotated = new Vector3Int((int)temp.x-k, (int)temp.y-k, (int)temp.z);
+                if (onClick) other.addPoint(rotated);
                 test.SetTile(rotated, wall);
             }
         }
@@ -115,6 +120,7 @@ public class tileMap : MonoBehaviour
                 Vector3Int p = new Vector3Int(topLeftX - k, j - k, k * 5);
                 Vector3 temp = RotatePointAroundPivot(new Vector3Int(topLeftX, j, k * 5), new Vector3Int(topLeftX, topLeftY, k * 5), new Vector3Int(0, 0, 90));
                 Vector3Int rotated = new Vector3Int((int)temp.x - k, (int)temp.y - k, (int)temp.z);
+                if (other.inHashSet(rotated)) continue;
                 test.SetTile(rotated, null);
             }
         }
@@ -178,19 +184,19 @@ public class tileMap : MonoBehaviour
         test.SetColor(temp, Color.red);
     }
 
-    void buildObject(int xpos, int ypos)
+    void buildObject(int xpos, int ypos, bool onClick=false)
     {
         if(curObject == "wall")
         {
-            buildWall(xpos, ypos);
+            buildWall(xpos, ypos, onClick);
         }
         else if(curObject == "road")
         {
-            buildRoad(xpos, ypos);
+            buildRoad(xpos, ypos, onClick);
         }
         else if(curObject == "house")
         {
-            buildHouse(xpos, ypos);
+            buildHouse(xpos, ypos, onClick);
         }
     }
 
@@ -229,6 +235,7 @@ public class tileMap : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             other.addPoint(selectedTile);
+            buildObject(selectedTile.x, selectedTile.y, true);
         }
         if (selectedTile.x < 50 && selectedTile.x >= 0 && selectedTile.y < 50 && selectedTile.y >= 0)
         {

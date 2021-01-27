@@ -46,6 +46,10 @@ public class playerController : MonoBehaviour
     {
         return player.addInHashSet(point);
     }
+    public bool inHashSet(Vector3Int point)
+    {
+        return player.inHashSet(point);
+    }
     void Start()
     {
         Game game = new Game();
