@@ -96,8 +96,9 @@ public class tileMap : MonoBehaviour
         return point; // return it
     }
 
-    void buildWall(int topLeftX, int topLeftY, bool onClick=false)
+    void buildWall(int topLeftX, int topLeftY, bool onClick=false, bool redColor = false)
     {
+        bool flag = false;
         for(int k = 1; k < 3; k++)
         {
             for(int j = topLeftY; j < topLeftY + 2; j++)
@@ -105,8 +106,14 @@ public class tileMap : MonoBehaviour
                 Vector3Int p = new Vector3Int(topLeftX-k, j-k, k * 5);
                 Vector3 temp = RotatePointAroundPivot(new Vector3Int(topLeftX, j, k*5), new Vector3Int(topLeftX, topLeftY, k*5), new Vector3Int(0, 0, 90));
                 Vector3Int rotated = new Vector3Int((int)temp.x-k, (int)temp.y-k, (int)temp.z);
-                if (onClick) other.addPoint(rotated);
+                if (other.inHashSet(rotated))
+                {
+                    flag = true;
+                    continue;
+                }
+                if (onClick && !flag) other.addPoint(rotated);
                 test.SetTile(rotated, wall);
+                if (flag) test.SetColor(rotated, Color.red);
             }
         }
     }
@@ -232,10 +239,10 @@ public class tileMap : MonoBehaviour
         selectedTile.x -= 6;
         selectedTile.y -= 6;
         test.SetTileFlags(selectedTile, TileFlags.None);
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(1))
         {
-            other.addPoint(selectedTile);
             buildObject(selectedTile.x, selectedTile.y, true);
+
         }
         if (selectedTile.x < 50 && selectedTile.x >= 0 && selectedTile.y < 50 && selectedTile.y >= 0)
         {
