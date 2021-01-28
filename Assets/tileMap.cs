@@ -21,7 +21,9 @@ public class tileMap : MonoBehaviour
     // Start is called before the first frame update
     void buildHouse(int topLeftX, int topLeftY, bool onClick=false)
     {
-        for(int k = 1; k < 3; k++)
+        List<Vector3Int> temp1 = new List<Vector3Int>();
+        bool flag = false;
+        for (int k = 1; k < 3; k++)
         {
             for(int i = topLeftX; i < topLeftX + 3; i++)
             {
@@ -30,9 +32,31 @@ public class tileMap : MonoBehaviour
                     Vector3Int p = new Vector3Int(i-k, j-k, k*5);
                     Vector3 temp = RotatePointAroundPivot(new Vector3Int(i, j, k * 5), new Vector3Int(topLeftX, topLeftY, k * 5), new Vector3Int(0, 0, 90));
                     Vector3Int rotated = new Vector3Int((int)temp.x - k, (int)temp.y - k, (int)temp.z);
-                    if (onClick) other.addPoint(rotated);
-                    test.SetTile(rotated, brick);
+                    temp1.Add(rotated);
                 }
+            }
+        }
+        foreach (Vector3Int part in temp1)
+        {
+            if (other.inHashSet(part)) flag = true;
+        }
+        if (!flag)
+        {
+            foreach (Vector3Int part in temp1)
+            {
+                if (onClick) other.addPoint(part);
+                test.SetTile(part, brick);
+            }
+
+        }
+        else
+        {
+            foreach (Vector3Int part in temp1)
+            {
+                if (other.inHashSet(part)) continue;
+                test.SetTile(part, brick);
+                test.SetTileFlags(part, TileFlags.None);
+                test.SetColor(part, Color.red);
             }
         }
     }
@@ -57,6 +81,8 @@ public class tileMap : MonoBehaviour
 
     void buildRoad(int topLeftX, int topLeftY, bool onClick=false)
     {
+        List<Vector3Int> temp1 = new List<Vector3Int>();
+        bool flag = false;
         for (int i = topLeftX; i < topLeftX + 2; i++)
         {
             for (int j = topLeftY; j < topLeftY + 2; j++)
@@ -64,8 +90,30 @@ public class tileMap : MonoBehaviour
                 Vector3Int p = new Vector3Int(i-1, j-1, 4);
                 Vector3 temp = RotatePointAroundPivot(new Vector3Int(i, j, 4), new Vector3Int(topLeftX, topLeftY, 4), new Vector3Int(0, 0, 90));
                 Vector3Int rotated = new Vector3Int((int)temp.x, (int)temp.y, (int)temp.z);
-                if (onClick) other.addPoint(rotated);
-                test.SetTile(rotated, road);
+                temp1.Add(rotated);
+            }
+        }
+        foreach (Vector3Int part in temp1)
+        {
+            if (other.inHashSet(part)) flag = true;
+        }
+        if (!flag)
+        {
+            foreach (Vector3Int part in temp1)
+            {
+                if (onClick) other.addPoint(part);
+                test.SetTile(part, road);
+            }
+
+        }
+        else
+        {
+            foreach (Vector3Int part in temp1)
+            {
+                if (other.inHashSet(part)) continue;
+                test.SetTile(part, road);
+                test.SetTileFlags(part, TileFlags.None);
+                test.SetColor(part, Color.red);
             }
         }
     }
@@ -98,22 +146,39 @@ public class tileMap : MonoBehaviour
 
     void buildWall(int topLeftX, int topLeftY, bool onClick=false, bool redColor = false)
     {
+        List<Vector3Int> temp1 = new List<Vector3Int>();
         bool flag = false;
-        for(int k = 1; k < 3; k++)
+        for (int k = 1; k < 3; k++)
         {
             for(int j = topLeftY; j < topLeftY + 2; j++)
             {
                 Vector3Int p = new Vector3Int(topLeftX-k, j-k, k * 5);
                 Vector3 temp = RotatePointAroundPivot(new Vector3Int(topLeftX, j, k*5), new Vector3Int(topLeftX, topLeftY, k*5), new Vector3Int(0, 0, 90));
                 Vector3Int rotated = new Vector3Int((int)temp.x-k, (int)temp.y-k, (int)temp.z);
-                if (other.inHashSet(rotated))
-                {
-                    flag = true;
-                    continue;
-                }
-                if (onClick && !flag) other.addPoint(rotated);
-                test.SetTile(rotated, wall);
-                if (flag) test.SetColor(rotated, Color.red);
+                temp1.Add(rotated);
+            }
+        }
+        foreach (Vector3Int part in temp1)
+        {
+            if (other.inHashSet(part)) flag = true;
+        }
+        if (!flag)
+        {
+            foreach(Vector3Int part in temp1)
+            {
+                if (onClick) other.addPoint(part);
+                test.SetTile(part, wall);
+            }
+            
+        }
+        else
+        {
+            foreach (Vector3Int part in temp1)
+            {
+                if (other.inHashSet(part)) continue;
+                test.SetTile(part, wall);
+                test.SetTileFlags(part, TileFlags.None);
+                test.SetColor(part, Color.red);
             }
         }
     }
