@@ -12,14 +12,16 @@ public class tileMap : MonoBehaviour
     public Tile wall;
     public Vector3Int prev;
     public playerController other;
+    public networkController networkControl;
     CanvasGroup buildWindow;
     private bool _isBuildOpen = false;
+    private const byte syncBuild = 0;
     int direction = 0;
     string curObject = "house";
     public CanvasGroup panel;
     //test123
     // Start is called before the first frame update
-    void buildHouse(int topLeftX, int topLeftY, bool onClick=false)
+    bool buildHouse(int topLeftX, int topLeftY, bool onClick=false)
     {
         List<Vector3Int> temp1 = new List<Vector3Int>();
         bool flag = false;
@@ -59,6 +61,7 @@ public class tileMap : MonoBehaviour
                 test.SetColor(part, Color.red);
             }
         }
+        return !flag;
     }
 
     void destroyHouse(int topLeftX, int topLeftY)
@@ -79,7 +82,7 @@ public class tileMap : MonoBehaviour
         }
     }
 
-    void buildRoad(int topLeftX, int topLeftY, bool onClick=false)
+    bool buildRoad(int topLeftX, int topLeftY, bool onClick=false)
     {
         List<Vector3Int> temp1 = new List<Vector3Int>();
         bool flag = false;
@@ -116,6 +119,7 @@ public class tileMap : MonoBehaviour
                 test.SetColor(part, Color.red);
             }
         }
+        return !flag;
     }
 
     void destroyRoad(int topLeftX, int topLeftY)
@@ -144,7 +148,7 @@ public class tileMap : MonoBehaviour
         return point; // return it
     }
 
-    void buildWall(int topLeftX, int topLeftY, bool onClick=false, bool redColor = false)
+    bool buildWall(int topLeftX, int topLeftY, bool onClick=false, bool redColor = false)
     {
         List<Vector3Int> temp1 = new List<Vector3Int>();
         bool flag = false;
@@ -181,6 +185,7 @@ public class tileMap : MonoBehaviour
                 test.SetColor(part, Color.red);
             }
         }
+        return !flag;
     }
 
     void destroyWall(int topLeftX, int topLeftY)
@@ -256,19 +261,23 @@ public class tileMap : MonoBehaviour
         test.SetColor(temp, Color.red);
     }
 
-    void buildObject(int xpos, int ypos, bool onClick=false)
+    bool buildObject(int xpos, int ypos, bool onClick=false)
     {
         if(curObject == "wall")
         {
-            buildWall(xpos, ypos, onClick);
+            return buildWall(xpos, ypos, onClick);
         }
         else if(curObject == "road")
         {
-            buildRoad(xpos, ypos, onClick);
+            return buildRoad(xpos, ypos, onClick);
         }
         else if(curObject == "house")
         {
-            buildHouse(xpos, ypos, onClick);
+            return buildHouse(xpos, ypos, onClick);
+        }
+        else
+        {
+            return false;
         }
     }
 
@@ -320,7 +329,10 @@ public class tileMap : MonoBehaviour
                         
                         destroyObject(prev.x, prev.y);
                         //buildHouse(x, y);
-                        buildObject(x, y);
+
+                        object[] eventData = new object[] {x, y, buildObject(x, y), curObject};
+                        networkControl = GameObject.Find("networkControl").GetComponent<networkController>();
+                        networkControl.sendEvent(eventData, syncBuild);
                     }
                     else
                     {

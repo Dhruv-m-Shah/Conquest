@@ -39,6 +39,5 @@ public class networkControllerJoin : MonoBehaviourPunCallbacks
     {
         Debug.Log("JOINED A ROOM!!");
         SceneManager.LoadScene(sceneName: "Scenes/SampleScene");
-
     }
 }

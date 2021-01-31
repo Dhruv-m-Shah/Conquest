@@ -1,5 +1,6 @@
 using Photon.Pun;
 using System.Collections;
+using ExitGames.Client.Photon;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Realtime;
@@ -14,9 +15,7 @@ public class networkController : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Awake()
     {
-        // #Critical
-        // this makes sure we can use PhotonNetwork.LoadLevel() on the master client and all clients in the same room sync their level automatically
-       //PhotonNetwork.AutomaticallySyncScene = true;
+        DontDestroyOnLoad(this);
     }
 
 
@@ -44,7 +43,6 @@ public class networkController : MonoBehaviourPunCallbacks
     public override void OnConnectedToMaster()
     {
         Debug.Log("We are now connected to the " + PhotonNetwork.CloudRegion + " server!");
-
     }
 
     public override void OnCreatedRoom()
@@ -66,6 +64,16 @@ public class networkController : MonoBehaviourPunCallbacks
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
         Debug.Log(message);
+    }
+    public void sendEvent(object[] data, byte eventId)
+    {
+        PhotonNetwork.RaiseEvent(eventId, data, RaiseEventOptions.Default, SendOptions.SendUnreliable);
+        Debug.Log("TEST567");
+    }
+
+    void OnEvent(EventData photonEvent)
+    {
+
     }
     // Update is called once per frame
     void Update()
