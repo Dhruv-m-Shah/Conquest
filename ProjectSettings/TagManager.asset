@@ -16,6 +16,7 @@ TagManager:
   - inputFieldGameName
   - joinGameButton
   - joinGame
+  - networkControl
   layers:
   - Default
   - TransparentFX

@@ -5,29 +5,32 @@ using UnityEngine;
 using Photon.Realtime;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+
 public class networkControllerJoin : MonoBehaviourPunCallbacks
 {
+    public networkController networkControl;
     // Start is called before the first frame update
+    void Awake()
+    {
+        DontDestroyOnLoad(this);
+    }
+
+    public void joinScene()
+    {
+        SceneManager.LoadScene(sceneName: "Scenes/SampleScene");
+    }
 
     void joinRoom()
     {
-        PhotonNetwork.JoinRoom("abc");
+        networkControl.joinRoom("abc");
     }
-
     void Start()
     {
-        PhotonNetwork.ConnectUsingSettings();
+
         UnityEngine.UI.Button joinGame = GameObject.FindGameObjectWithTag("joinGame").GetComponent<Button>();
-        //asdasd
+        networkControl = GameObject.Find("networkControl").GetComponent<networkController>();
         joinGame.onClick.AddListener(() => joinRoom());
-    }
-
-    public override void OnConnectedToMaster()
-    {
-        Debug.Log("We are now connected to the " + PhotonNetwork.CloudRegion + " server!");
-
-        //roomsList = PhotonNetwork.GetRoomList();
-
+        
     }
 
     // Update is called once per frame
@@ -35,9 +38,5 @@ public class networkControllerJoin : MonoBehaviourPunCallbacks
     {
         
     }
-    public override void OnJoinedRoom()
-    {
-        Debug.Log("JOINED A ROOM!!");
-        SceneManager.LoadScene(sceneName: "Scenes/SampleScene");
-    }
+
 }

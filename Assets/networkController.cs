@@ -9,8 +9,8 @@ using UnityEngine.SceneManagement;
 
 public class networkController : MonoBehaviourPunCallbacks
 {
+    public networkControllerJoin joinControl;
     string gameVersion = "1";
-    public Text createGameField;
     //private RoomInfo[] roomsList;
     // Start is called before the first frame update
     void Awake()
@@ -18,11 +18,15 @@ public class networkController : MonoBehaviourPunCallbacks
         DontDestroyOnLoad(this);
     }
 
-
-    void createGame()
+    public void joinRoom(string roomName)
     {
-        UnityEngine.UI.InputField inputFieldGameName = GameObject.FindGameObjectWithTag("inputFieldGameName").GetComponent<InputField>();
-        PhotonNetwork.CreateRoom(inputFieldGameName.text,
+        bool temp = PhotonNetwork.JoinRoom(roomName);
+        Debug.Log("Ts");
+    }
+    public void createGame(string name)
+    {
+        Debug.Log(name);
+        PhotonNetwork.CreateRoom(name,
         new RoomOptions()
         {
             MaxPlayers = 2,
@@ -35,8 +39,6 @@ public class networkController : MonoBehaviourPunCallbacks
     void Start()
     {
         PhotonNetwork.ConnectUsingSettings();
-        UnityEngine.UI.Button createGameButton1 = GameObject.FindGameObjectWithTag("createGameButton1").GetComponent<Button>();
-        createGameButton1.onClick.AddListener(() => createGame());
         //Connect();
     }
 
@@ -47,14 +49,12 @@ public class networkController : MonoBehaviourPunCallbacks
 
     public override void OnCreatedRoom()
     {
-        
+        SceneManager.LoadScene(sceneName: "Scenes/SampleScene");
     }
 
     public override void OnJoinedRoom()
     {
         SceneManager.LoadScene(sceneName: "Scenes/SampleScene");
-        Debug.Log("Joined");
-        
     }
     public override void OnPlayerEnteredRoom(Player other)
     {
@@ -81,3 +81,4 @@ public class networkController : MonoBehaviourPunCallbacks
 
     }
 }
+

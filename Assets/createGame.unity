@@ -1122,7 +1122,7 @@ GameObject:
   - component: {fileID: 1992557050}
   - component: {fileID: 1992557049}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: networkControlCreate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1137,10 +1137,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1992557048}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6793a151bfb32b2459084aa8088f43a6, type: 3}
+  m_Script: {fileID: 11500000, guid: 45f1b19130928f3459aa33b0cd20a2d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  createGameField: {fileID: 0}
 --- !u!4 &1992557050
 Transform:
   m_ObjectHideFlags: 0
