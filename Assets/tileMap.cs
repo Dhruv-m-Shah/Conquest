@@ -332,7 +332,7 @@ public class tileMap : MonoBehaviour
 
                         object[] eventData = new object[] {x, y, buildObject(x, y), curObject};
                         networkControl = GameObject.Find("networkControl").GetComponent<networkController>();
-                        networkControl.sendEvent(eventData, syncBuild);
+                        networkControl.sendEvent();
                     }
                     else
                     {

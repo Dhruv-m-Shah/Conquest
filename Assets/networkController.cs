@@ -11,7 +11,7 @@ public class networkController : MonoBehaviourPunCallbacks
 {
     public networkControllerJoin joinControl;
     string gameVersion = "1";
-    //private RoomInfo[] roomsList;
+    public PhotonView photonView;
     // Start is called before the first frame update
     void Awake()
     {
@@ -65,20 +65,22 @@ public class networkController : MonoBehaviourPunCallbacks
     {
         Debug.Log(message);
     }
-    public void sendEvent(object[] data, byte eventId)
+    public void sendEvent()
     {
-        PhotonNetwork.RaiseEvent(eventId, data, RaiseEventOptions.Default, SendOptions.SendUnreliable);
-        Debug.Log("TEST567");
+        PhotonView photonView = PhotonView.Get(this);
+        photonView.RPC("test", RpcTarget.Others);
     }
 
-    void OnEvent(EventData photonEvent)
+    [PunRPC]
+    public void test()
     {
-
+        Debug.Log("From user!?!?!");
     }
+
     // Update is called once per frame
     void Update()
-    {
+   {
 
-    }
+   }
 }
 

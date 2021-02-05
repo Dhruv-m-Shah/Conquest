@@ -18,7 +18,6 @@ public class optionsLoader : MonoBehaviour
     {
         UnityEngine.UI.Button createGameButton = GameObject.FindGameObjectWithTag("createGame").GetComponent<Button>();
         UnityEngine.UI.Button joinGameButton = GameObject.FindGameObjectWithTag("joinGameButton").GetComponent<Button>();
-        //asdasd
         createGameButton.onClick.AddListener(() => switchSceneCreateGame());
         joinGameButton.onClick.AddListener(() => switchSceneJoinGame());
     }
