@@ -12,12 +12,13 @@ public class networkController : MonoBehaviourPunCallbacks
     public networkControllerJoin joinControl;
     string gameVersion = "1";
     public PhotonView photonView;
+    int xprev = 0;
+    int yprev = 0;
     // Start is called before the first frame update
     void Awake()
     {
         DontDestroyOnLoad(this);
     }
-
     public void joinRoom(string roomName)
     {
         bool temp = PhotonNetwork.JoinRoom(roomName);
@@ -65,22 +66,41 @@ public class networkController : MonoBehaviourPunCallbacks
     {
         Debug.Log(message);
     }
-    public void sendEvent()
+
+    public void sendEvent(Vector3Int pos, string obj, bool delete1 = false)
     {
         PhotonView photonView = PhotonView.Get(this);
-        photonView.RPC("test", RpcTarget.Others);
+        photonView.RPC("test", RpcTarget.Others, pos.x, pos.y, obj, delete1);
     }
 
     [PunRPC]
-    public void test()
+    public void test(int xpos, int ypos, string obj, bool delete1)
     {
-        Debug.Log("From user!?!?!");
+
+        tileMap tileControl = GameObject.Find("map").GetComponent<tileMap>();
+        if (obj == "wall")
+        {
+            tileControl.buildWall(xpos, ypos, false);   
+        }
+        else if (obj == "road")
+        {
+            tileControl.buildRoad(xpos, ypos, false);
+        }
+        else if (obj == "house")
+        {
+            tileControl.dHouse(xprev, yprev);
+            
+            tileControl.buildHouse(xpos, ypos, false);
+            xprev = xpos;
+            yprev = ypos;
+            
+        }
     }
 
     // Update is called once per frame
     void Update()
    {
-
+        
    }
 }
 

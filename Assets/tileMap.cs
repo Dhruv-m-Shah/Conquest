@@ -19,7 +19,8 @@ public class tileMap : MonoBehaviour
     int direction = 0;
     string curObject = "house";
     public CanvasGroup panel;
-    bool buildHouse(int topLeftX, int topLeftY, bool onClick=false)
+
+    public bool buildHouse(int topLeftX, int topLeftY, bool onClick=false)
     {
         List<Vector3Int> temp1 = new List<Vector3Int>();
         bool flag = false;
@@ -62,7 +63,7 @@ public class tileMap : MonoBehaviour
         return !flag;
     }
 
-    void destroyHouse(int topLeftX, int topLeftY)
+    public void dHouse(int topLeftX, int topLeftY )
     {
         for (int k = 1; k < 3; k++)
         {
@@ -80,7 +81,7 @@ public class tileMap : MonoBehaviour
         }
     }
 
-    bool buildRoad(int topLeftX, int topLeftY, bool onClick=false)
+    public bool buildRoad(int topLeftX, int topLeftY, bool onClick=false)
     {
         List<Vector3Int> temp1 = new List<Vector3Int>();
         bool flag = false;
@@ -120,7 +121,7 @@ public class tileMap : MonoBehaviour
         return !flag;
     }
 
-    void destroyRoad(int topLeftX, int topLeftY)
+    public void destroyRoad(int topLeftX, int topLeftY)
     {
         for (int i = topLeftX; i < topLeftX + 2; i++)
         {
@@ -146,7 +147,7 @@ public class tileMap : MonoBehaviour
         return point; // return it
     }
 
-    bool buildWall(int topLeftX, int topLeftY, bool onClick=false, bool redColor = false)
+    public bool buildWall(int topLeftX, int topLeftY, bool onClick=false, bool redColor = false)
     {
         List<Vector3Int> temp1 = new List<Vector3Int>();
         bool flag = false;
@@ -185,8 +186,8 @@ public class tileMap : MonoBehaviour
         }
         return !flag;
     }
-
-    void destroyWall(int topLeftX, int topLeftY)
+    //test
+    public void destroyWall(int topLeftX, int topLeftY)
     {
         for (int k = 1; k < 3; k++)
         {
@@ -289,7 +290,7 @@ public class tileMap : MonoBehaviour
         }
         else if (curObject == "house")
         {
-            destroyHouse(xpos, ypos);
+            dHouse(xpos, ypos);
         }
     }
     // Update is called once per frame.
@@ -326,7 +327,8 @@ public class tileMap : MonoBehaviour
                         destroyObject(prev.x, prev.y);
                         object[] eventData = new object[] {x, y, buildObject(x, y), curObject};
                         networkControl = GameObject.Find("networkControl").GetComponent<networkController>();
-                        networkControl.sendEvent();
+                        networkControl.sendEvent(prev, curObject, true);
+                        networkControl.sendEvent(selectedTile, curObject, false);
                     }
                 }
             }
