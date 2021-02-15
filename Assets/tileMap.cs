@@ -19,8 +19,6 @@ public class tileMap : MonoBehaviour
     int direction = 0;
     string curObject = "house";
     public CanvasGroup panel;
-    //test123
-    // Start is called before the first frame update
     bool buildHouse(int topLeftX, int topLeftY, bool onClick=false)
     {
         List<Vector3Int> temp1 = new List<Vector3Int>();
@@ -236,7 +234,6 @@ public class tileMap : MonoBehaviour
         UnityEngine.UI.Button wallButton = GameObject.FindGameObjectWithTag("wallButton").GetComponent<Button>();
         UnityEngine.UI.Button buildButton = GameObject.FindGameObjectWithTag("buildButton").GetComponent<Button>();
         UnityEngine.UI.Button closeBuildButton = GameObject.FindGameObjectWithTag("closeBuildButton").GetComponent<Button>();
-        //asdasd
         closeBuildButton.onClick.AddListener(() => closeBuildWindow());
         buildButton.onClick.AddListener(() => showBuildWindow());
         houseButton.onClick.AddListener(() => TaskOnClick("house", prev));
@@ -252,7 +249,6 @@ public class tileMap : MonoBehaviour
                 Vector3Int p = new Vector3Int(x, y, 0);
                 bool odd = (x + y) % 2 == 1;
                 Tile tile = test1;
-
                 test.SetTile(p, tile);
             }
         }
@@ -328,15 +324,9 @@ public class tileMap : MonoBehaviour
                     {
                         
                         destroyObject(prev.x, prev.y);
-                        //buildHouse(x, y);
-
                         object[] eventData = new object[] {x, y, buildObject(x, y), curObject};
                         networkControl = GameObject.Find("networkControl").GetComponent<networkController>();
                         networkControl.sendEvent();
-                    }
-                    else
-                    {
-                        //test.SetColor(new Vector3Int(x, y, 0), Color.white);
                     }
                 }
             }
