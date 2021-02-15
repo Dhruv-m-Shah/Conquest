@@ -121,7 +121,7 @@ public class tileMap : MonoBehaviour
         return !flag;
     }
 
-    public void destroyRoad(int topLeftX, int topLeftY)
+    public void dRoad(int topLeftX, int topLeftY)
     {
         for (int i = topLeftX; i < topLeftX + 2; i++)
         {
@@ -187,7 +187,7 @@ public class tileMap : MonoBehaviour
         return !flag;
     }
     //test
-    public void destroyWall(int topLeftX, int topLeftY)
+    public void dWall(int topLeftX, int topLeftY)
     {
         for (int k = 1; k < 3; k++)
         {
@@ -282,11 +282,11 @@ public class tileMap : MonoBehaviour
     {
         if (curObject == "wall")
         {
-            destroyWall(xpos, ypos);
+            dWall(xpos, ypos);
         }
         else if (curObject == "road")
         {
-            destroyRoad(xpos, ypos);
+            dRoad(xpos, ypos);
         }
         else if (curObject == "house")
         {

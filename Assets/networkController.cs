@@ -80,16 +80,21 @@ public class networkController : MonoBehaviourPunCallbacks
         tileMap tileControl = GameObject.Find("map").GetComponent<tileMap>();
         if (obj == "wall")
         {
-            tileControl.buildWall(xpos, ypos, false);   
+            tileControl.dWall(xprev, yprev);
+            tileControl.buildWall(xpos, ypos, false);
+            xprev = xpos;
+            yprev = ypos;
         }
         else if (obj == "road")
         {
+            tileControl.dRoad(xprev, yprev);
             tileControl.buildRoad(xpos, ypos, false);
+            xprev = xpos;
+            yprev = ypos;
         }
         else if (obj == "house")
         {
             tileControl.dHouse(xprev, yprev);
-            
             tileControl.buildHouse(xpos, ypos, false);
             xprev = xpos;
             yprev = ypos;
