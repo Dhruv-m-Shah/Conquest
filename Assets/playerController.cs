@@ -9,6 +9,10 @@ public class Game
     {
         this.player = player;
     }
+    public void setOpponent(Players player)
+    {
+
+    }
 }
 public class Players
 {
@@ -41,6 +45,7 @@ public class Players
 public class playerController : MonoBehaviour
 {
     Players player;
+    Game game;
     // Start is called before the first frame update
     public bool addPoint(Vector3Int point)
     {
@@ -52,7 +57,11 @@ public class playerController : MonoBehaviour
     }
     void Start()
     {
-        Game game = new Game();
+        
+    }
+
+    void setPlayer(string id)
+    {
         player = new Players("player1");
         game.setPlayer(player);
     }

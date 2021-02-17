@@ -50,11 +50,20 @@ public class networkController : MonoBehaviourPunCallbacks
 
     public override void OnCreatedRoom()
     {
+        Debug.Log("TEST");
+        foreach (Player player in PhotonNetwork.PlayerList)
+        {
+            Debug.Log(player.UserId);
+        }
         SceneManager.LoadScene(sceneName: "Scenes/SampleScene");
     }
 
     public override void OnJoinedRoom()
     {
+        foreach (Player player in PhotonNetwork.PlayerList)
+        {
+            Debug.Log(player);
+        }
         SceneManager.LoadScene(sceneName: "Scenes/SampleScene");
     }
     public override void OnPlayerEnteredRoom(Player other)

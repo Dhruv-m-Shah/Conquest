@@ -20,6 +20,7 @@ public class networkControllerCreate : MonoBehaviour
     {
         networkControl = GameObject.Find("networkControl").GetComponent<networkController>();
     }
+
     void Start()
     {
         UnityEngine.UI.Button createGame = GameObject.FindGameObjectWithTag("createGameButton").GetComponent<Button>();
