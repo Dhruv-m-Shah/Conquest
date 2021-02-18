@@ -11,7 +11,8 @@ public class Game
     }
     public void setOpponent(Players player)
     {
-
+        Debug.Log(player.getId());
+        this.opponent = player;
     }
 }
 public class Players
@@ -39,31 +40,53 @@ public class Players
         taken.Add(point);
         return true;
     }
+    public string getId()
+    {
+        return this.playerId;
+    }
 }
 
 
 public class playerController : MonoBehaviour
 {
+    void Awake()
+    {
+        DontDestroyOnLoad(this);
+    }
     Players player;
+    Players opponent;
     Game game;
     // Start is called before the first frame update
     public bool addPoint(Vector3Int point)
     {
         return player.addInHashSet(point);
     }
+
+    public bool addPointOpponent(Vector3Int point)
+    {
+        return opponent.addInHashSet(point);
+    }
     public bool inHashSet(Vector3Int point)
     {
-        return player.inHashSet(point);
+        return player.inHashSet(point) || opponent.inHashSet(point);
     }
     void Start()
     {
-        
+        game = new Game();
+        player = new Players("player");
+        opponent = new Players("opponent");
     }
 
-    void setPlayer(string id)
+    public void setPlayer(string id) // id is set to PUN2 userid.
     {
-        player = new Players("player1");
+        player = new Players(id);
         game.setPlayer(player);
+    }
+
+    public void setOpponent(string id)
+    {
+        opponent = new Players(id);
+        game.setOpponent(opponent);
     }
 
     // Update is called once per frame

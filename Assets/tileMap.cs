@@ -20,6 +20,12 @@ public class tileMap : MonoBehaviour
     string curObject = "house";
     public CanvasGroup panel;
 
+    public void addTileOpponent(int xpos, int ypos, int zpos)
+    {
+        Vector3Int temp = new Vector3Int(xpos, ypos, zpos);
+        other.addPointOpponent(temp);
+    }
+
     public bool buildHouse(int topLeftX, int topLeftY, bool onClick=false)
     {
         List<Vector3Int> temp1 = new List<Vector3Int>();
@@ -45,10 +51,13 @@ public class tileMap : MonoBehaviour
         {
             foreach (Vector3Int part in temp1)
             {
-                if (onClick) other.addPoint(part);
+                if (onClick)
+                {
+                    other.addPoint(part);
+                    networkControl.sendEvent(part, curObject, false, true);
+                }
                 test.SetTile(part, brick);
             }
-
         }
         else
         {
@@ -227,6 +236,9 @@ public class tileMap : MonoBehaviour
     }
     void Start()
     {
+        networkControl = GameObject.Find("networkControl").GetComponent<networkController>();
+        networkControl.addPlayerToGame(other);
+
         buildWindow = GameObject.FindGameObjectWithTag("buildPanel").GetComponent<CanvasGroup>();
         buildWindow.alpha = 0;
         buildWindow.interactable = false;
@@ -312,7 +324,10 @@ public class tileMap : MonoBehaviour
         test.SetTileFlags(selectedTile, TileFlags.None);
         if (Input.GetMouseButtonDown(1))
         {
-            buildObject(selectedTile.x, selectedTile.y, true);
+            if (buildObject(selectedTile.x, selectedTile.y, true))
+            {
+                networkControl.sendEvent(selectedTile, curObject, false);
+            }
 
         }
         if (selectedTile.x < 50 && selectedTile.x >= 0 && selectedTile.y < 50 && selectedTile.y >= 0)

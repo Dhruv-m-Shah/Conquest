@@ -14,6 +14,7 @@ public class networkController : MonoBehaviourPunCallbacks
     public PhotonView photonView;
     int xprev = 0;
     int yprev = 0;
+    public playerController reference;
     // Start is called before the first frame update
     void Awake()
     {
@@ -50,14 +51,36 @@ public class networkController : MonoBehaviourPunCallbacks
 
     public override void OnCreatedRoom()
     {
+        SceneManager.LoadScene(sceneName: "Scenes/SampleScene");
         Debug.Log("TEST");
+
+    }
+    public void addPlayerToGame(playerController other)
+    {
+        reference = other;
+        if(PhotonNetwork.CurrentRoom.PlayerCount == 2) // Second player joined game.
+        {
+            string opponent = PhotonNetwork.PlayerListOthers[0].UserId;
+            foreach (Player player in PhotonNetwork.PlayerList)
+            {
+                if(player.UserId == opponent)
+                {
+                    other.setOpponent(player.UserId);
+                }
+                else
+                {
+                    other.setPlayer(player.UserId);
+                }
+                
+            }
+
+        }
+
         foreach (Player player in PhotonNetwork.PlayerList)
         {
-            Debug.Log(player.UserId);
+            other.setPlayer(player.UserId);
         }
-        SceneManager.LoadScene(sceneName: "Scenes/SampleScene");
     }
-
     public override void OnJoinedRoom()
     {
         foreach (Player player in PhotonNetwork.PlayerList)
@@ -68,7 +91,8 @@ public class networkController : MonoBehaviourPunCallbacks
     }
     public override void OnPlayerEnteredRoom(Player other)
     {
-        Debug.Log("entered Room");
+        Debug.Log("Opponent Entered!!");
+        reference.setOpponent(other.UserId); 
     }
 
     public override void OnJoinRandomFailed(short returnCode, string message)
@@ -76,14 +100,15 @@ public class networkController : MonoBehaviourPunCallbacks
         Debug.Log(message);
     }
 
-    public void sendEvent(Vector3Int pos, string obj, bool delete1 = false)
+    public void sendEvent(Vector3Int pos, string obj, bool delete1 = false, bool permenant = false)
     {
         PhotonView photonView = PhotonView.Get(this);
-        photonView.RPC("test", RpcTarget.Others, pos.x, pos.y, obj, delete1);
+        if(delete1) photonView.RPC("syncPlayerBuild", RpcTarget.Others, pos.x, pos.y, obj, delete1);
+        else if(permenant) photonView.RPC("syncPlayerBuildPerm", RpcTarget.Others, pos.x, pos.y, pos.z);
     }
 
     [PunRPC]
-    public void test(int xpos, int ypos, string obj, bool delete1)
+    public void syncPlayerBuild(int xpos, int ypos, string obj, bool delete1)
     {
 
         tileMap tileControl = GameObject.Find("map").GetComponent<tileMap>();
@@ -109,6 +134,13 @@ public class networkController : MonoBehaviourPunCallbacks
             yprev = ypos;
             
         }
+    }
+
+    [PunRPC]
+    public void syncPlayerBuildPerm(int xpos, int ypos, int zpos)
+    {
+        tileMap tileControl = GameObject.Find("map").GetComponent<tileMap>();
+        tileControl.addTileOpponent(xpos, ypos, zpos);
     }
 
     // Update is called once per frame
