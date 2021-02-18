@@ -5,6 +5,7 @@ public class Game
 {
     Players player = null;
     Players opponent = null;
+    string turn = "";
     public void setPlayer(Players player)
     {
         this.player = player;
@@ -14,6 +15,11 @@ public class Game
         Debug.Log(player.getId());
         this.opponent = player;
     }
+    public void changeTurn()
+    {
+        player.setTurn(!player.getTurn());
+        opponent.setTurn(!opponent.getTurn());
+    }
 }
 public class Players
 {
@@ -22,9 +28,17 @@ public class Players
     int food = 100;
     int gold = 100;
     int stone = 100;
+    bool turn;
     // Base stats;
     HashSet<Vector3Int> taken;
-    
+    public bool getTurn(bool val)
+    {
+        return this.turn;
+    }
+    public void setTurn(bool val)
+    {
+        this.turn = val;
+    }
     public Players(string id)
     {
         playerId = id;
