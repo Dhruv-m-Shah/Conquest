@@ -12,10 +12,15 @@ public class networkController : MonoBehaviourPunCallbacks
     public networkControllerJoin joinControl;
     string gameVersion = "1";
     public PhotonView photonView;
+    public lobby gameLobby;
     int xprev = 0;
     int yprev = 0;
     public playerController reference;
     // Start is called before the first frame update
+    public playerController getGameInstance()
+    {
+        return reference;
+    }
     void Awake()
     {
         DontDestroyOnLoad(this);
@@ -40,6 +45,7 @@ public class networkController : MonoBehaviourPunCallbacks
     }
     void Start()
     {
+        reference = GameObject.Find("playerController").GetComponent<playerController>();
         PhotonNetwork.ConnectUsingSettings();
         //Connect();
     }
@@ -51,13 +57,11 @@ public class networkController : MonoBehaviourPunCallbacks
 
     public override void OnCreatedRoom()
     {
-        SceneManager.LoadScene(sceneName: "Scenes/SampleScene");
-        Debug.Log("TEST");
-
+        SceneManager.LoadScene(sceneName: "gameLobby");
     }
-    public void addPlayerToGame(playerController other)
+    public void addPlayerToGame()
     {
-        reference = other;
+        gameLobby = GameObject.Find("CanvasLobby").GetComponent<lobby>();
         if(PhotonNetwork.CurrentRoom.PlayerCount == 2) // Second player joined game.
         {
             string opponent = PhotonNetwork.PlayerListOthers[0].UserId;
@@ -65,21 +69,26 @@ public class networkController : MonoBehaviourPunCallbacks
             {
                 if(player.UserId == opponent)
                 {
-                    other.setOpponent(player.UserId);
+                    reference.setOpponent(player.UserId);
                 }
                 else
                 {
-                    other.setPlayer(player.UserId);
+                    reference.setPlayer(player.UserId);
+                    gameLobby.displayPlayerId(player.UserId);
                 }
                 
             }
 
         }
-
-        foreach (Player player in PhotonNetwork.PlayerList)
-        {
-            other.setPlayer(player.UserId);
+        else {
+            foreach (Player player in PhotonNetwork.PlayerList)
+            {
+                reference.setPlayer(player.UserId);
+                gameLobby.displayPlayerId(player.UserId);
+            }
         }
+
+
     }
     public override void OnJoinedRoom()
     {
@@ -87,12 +96,13 @@ public class networkController : MonoBehaviourPunCallbacks
         {
             Debug.Log(player);
         }
-        SceneManager.LoadScene(sceneName: "Scenes/SampleScene");
+        SceneManager.LoadScene(sceneName: "gameLobby");
     }
     public override void OnPlayerEnteredRoom(Player other)
     {
         Debug.Log("Opponent Entered!!");
-        reference.setOpponent(other.UserId); 
+        reference.setOpponent(other.UserId);
+        gameLobby.displayOpponentId(other.UserId);
     }
 
     public override void OnJoinRandomFailed(short returnCode, string message)

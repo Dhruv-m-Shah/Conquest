@@ -17,6 +17,8 @@ TagManager:
   - joinGameButton
   - joinGame
   - networkControl
+  - lobbyName1
+  - lobbyName2
   layers:
   - Default
   - TransparentFX

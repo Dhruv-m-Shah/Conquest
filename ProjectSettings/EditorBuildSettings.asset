@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/joiningScreen.unity
     guid: 22c8462b71f9fa44998c3f02e5f891c1
   - enabled: 1
+    path: Assets/gameLobby.unity
+    guid: 432368ae27bef3647b2dd4d6ed99dfa5
+  - enabled: 1
     path: Assets/createGame.unity
     guid: 8b3924ef9be6525448a2a206f9c6650b
   - enabled: 1

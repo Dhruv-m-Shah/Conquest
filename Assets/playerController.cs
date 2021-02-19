@@ -31,7 +31,7 @@ public class Players
     bool turn;
     // Base stats;
     HashSet<Vector3Int> taken;
-    public bool getTurn(bool val)
+    public bool getTurn()
     {
         return this.turn;
     }
