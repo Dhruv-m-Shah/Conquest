@@ -9,6 +9,7 @@ public class lobby : MonoBehaviour
     public networkController networkControl;
     public Text playerName;
     public Text opponentName;
+    public Dropdown playerTurn;
     // Start is called before the first frame update
 
     void Awake()
@@ -29,11 +30,21 @@ public class lobby : MonoBehaviour
         opponentName.text += " " + id;
     }
 
+    public void setDropdown(int value)
+    {
+        playerTurn.value = value;
+    }
+
     void Start()
     {
         networkControl = GameObject.Find("networkControl").GetComponent<networkController>();
         networkControl.addPlayerToGame();
+        playerTurn.onValueChanged.AddListener(delegate {
+            networkControl.syncPlayerDropdown(playerTurn.value);
+        });
     }
+
+    
 
     // Update is called once per frame
     void Update()

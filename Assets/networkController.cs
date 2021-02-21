@@ -70,25 +70,37 @@ public class networkController : MonoBehaviourPunCallbacks
                 if(player.UserId == opponent)
                 {
                     reference.setOpponent(player.UserId);
+                    reference.setHost(player.UserId);
+                    gameLobby.displayPlayerId(player.UserId);
                 }
                 else
                 {
                     reference.setPlayer(player.UserId);
-                    gameLobby.displayPlayerId(player.UserId);
+                    gameLobby.displayOpponentId(player.UserId);
                 }
                 
             }
-
         }
         else {
             foreach (Player player in PhotonNetwork.PlayerList)
             {
                 reference.setPlayer(player.UserId);
+                reference.setHost(player.UserId);
                 gameLobby.displayPlayerId(player.UserId);
             }
         }
 
 
+    }
+
+    public void setHostFirst()
+    {
+        reference.setHostFirst();
+    }
+
+    public void setHostSecond()
+    {
+        reference.setHostSecond();
     }
     public override void OnJoinedRoom()
     {
@@ -115,6 +127,19 @@ public class networkController : MonoBehaviourPunCallbacks
         PhotonView photonView = PhotonView.Get(this);
         if(delete1) photonView.RPC("syncPlayerBuild", RpcTarget.Others, pos.x, pos.y, obj, delete1);
         else if(permenant) photonView.RPC("syncPlayerBuildPerm", RpcTarget.Others, pos.x, pos.y, pos.z);
+    }
+
+    
+    public void syncPlayerDropdown(int value)
+    {
+        PhotonView photonView = PhotonView.Get(this);
+        photonView.RPC("syncPlayerDropdownNetwork", RpcTarget.Others, value);
+    }
+
+    [PunRPC]
+    public void syncPlayerDropdownNetwork(int value)
+    {
+        gameLobby.setDropdown(value);
     }
 
     [PunRPC]

@@ -28,6 +28,7 @@ public class Players
     int food = 100;
     int gold = 100;
     int stone = 100;
+    bool isHost = false;
     bool turn;
     // Base stats;
     HashSet<Vector3Int> taken;
@@ -58,6 +59,16 @@ public class Players
     {
         return this.playerId;
     }
+    
+    public void setHost()
+    {
+        this.isHost = true;
+    }
+
+    public bool getHost()
+    {
+        return this.isHost;
+    }
 }
 
 
@@ -80,10 +91,12 @@ public class playerController : MonoBehaviour
     {
         return opponent.addInHashSet(point);
     }
+
     public bool inHashSet(Vector3Int point)
     {
         return player.inHashSet(point) || opponent.inHashSet(point);
     }
+
     void Start()
     {
         game = new Game();
@@ -101,6 +114,48 @@ public class playerController : MonoBehaviour
     {
         opponent = new Players(id);
         game.setOpponent(opponent);
+    }
+
+    public void setHost(string playerId)
+    {
+        if(player.getId() == playerId)
+        {
+            player.setHost();
+        }
+        else
+        {
+            opponent.setHost();
+        }
+    }
+
+
+    public void setHostFirst()
+    {
+        if (player.getHost())
+        {
+            player.setTurn(true);
+            opponent.setTurn(false);
+        }
+        else
+        {
+            player.setTurn(false);
+            opponent.setTurn(true);
+        }
+    }
+
+    public void setHostSecond()
+    {
+        if (player.getHost())
+        {
+            player.setTurn(false);
+            opponent.setTurn(true);
+            
+        }
+        else
+        {
+            player.setTurn(true);
+            opponent.setTurn(false);
+        }
     }
 
     // Update is called once per frame
