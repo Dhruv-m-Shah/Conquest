@@ -237,7 +237,6 @@ public class tileMap : MonoBehaviour
     void Start()
     {
         networkControl = GameObject.Find("networkControl").GetComponent<networkController>();
-        lobby gameLobby = GameObject.Find("lobby").GetComponent<lobby>();
         other = networkControl.getGameInstance();
         buildWindow = GameObject.FindGameObjectWithTag("buildPanel").GetComponent<CanvasGroup>();
         buildWindow.alpha = 0;

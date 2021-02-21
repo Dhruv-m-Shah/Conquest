@@ -128,7 +128,6 @@ public class playerController : MonoBehaviour
         }
     }
 
-
     public void setHostFirst()
     {
         if (player.getHost())

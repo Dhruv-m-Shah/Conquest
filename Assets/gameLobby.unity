@@ -403,6 +403,8 @@ MonoBehaviour:
   playerName: {fileID: 554406282}
   opponentName: {fileID: 1792995533}
   playerTurn: {fileID: 1490659948}
+  startGameButton: {fileID: 1354671666}
+  reference: {fileID: 0}
 --- !u!1 &253163792
 GameObject:
   m_ObjectHideFlags: 0
