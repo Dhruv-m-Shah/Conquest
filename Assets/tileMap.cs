@@ -234,6 +234,15 @@ public class tileMap : MonoBehaviour
         destroyObject(prev.x, prev.y);
         curObject = buildingType;
     }
+    void endTurn(Vector3Int prev)
+    {
+        if (other.myTurn())
+        {
+            destroyObject(prev.x, prev.y);
+            other.changeTurn();
+            networkControl.changeTurn(prev, curObject);
+        }
+    }
     void Start()
     {
         networkControl = GameObject.Find("networkControl").GetComponent<networkController>();
@@ -246,11 +255,13 @@ public class tileMap : MonoBehaviour
         UnityEngine.UI.Button wallButton = GameObject.FindGameObjectWithTag("wallButton").GetComponent<Button>();
         UnityEngine.UI.Button buildButton = GameObject.FindGameObjectWithTag("buildButton").GetComponent<Button>();
         UnityEngine.UI.Button closeBuildButton = GameObject.FindGameObjectWithTag("closeBuildButton").GetComponent<Button>();
+        UnityEngine.UI.Button endTurnButton = GameObject.FindGameObjectWithTag("endTurn").GetComponent<Button>();
         closeBuildButton.onClick.AddListener(() => closeBuildWindow());
         buildButton.onClick.AddListener(() => showBuildWindow());
         houseButton.onClick.AddListener(() => TaskOnClick("house", prev));
         roadButton.onClick.AddListener(() => TaskOnClick("road", prev));
         wallButton.onClick.AddListener(() => TaskOnClick("wall", prev));
+        endTurnButton.onClick.AddListener(() => endTurn(prev));
         prev = new Vector3Int(0, 0, 0);
         GameObject.Find("Main Camera").transform.position = new Vector3(10, 11.5f, -10);
         GameObject.Find("Main Camera").GetComponent<Camera>().orthographicSize = 14;
@@ -289,24 +300,46 @@ public class tileMap : MonoBehaviour
         }
     }
 
-    void destroyObject(int xpos, int ypos)
+    public void destroyObject(int xpos, int ypos, string sync = "")
     {
-        if (curObject == "wall")
+        if (sync == "")
         {
-            dWall(xpos, ypos);
+            if (curObject == "wall")
+            {
+                dWall(xpos, ypos);
+            }
+            else if (curObject == "road")
+            {
+                dRoad(xpos, ypos);
+            }
+            else if (curObject == "house")
+            {
+                dHouse(xpos, ypos);
+            }
         }
-        else if (curObject == "road")
+        else
         {
-            dRoad(xpos, ypos);
-        }
-        else if (curObject == "house")
-        {
-            dHouse(xpos, ypos);
+            if (sync == "wall")
+            {
+                dWall(xpos, ypos);
+            }
+            else if (sync == "road")
+            {
+                dRoad(xpos, ypos);
+            }
+            else if (sync == "house")
+            {
+                dHouse(xpos, ypos);
+            }
         }
     }
     // Update is called once per frame.
     void Update()
     {
+        if (!other.myTurn())
+        {
+            return;
+        }
         if (Input.GetKeyDown("space"))
         {
             destroyObject(prev.x, prev.y);

@@ -157,6 +157,15 @@ public class playerController : MonoBehaviour
         }
     }
 
+    public bool myTurn()
+    {
+        return player.getTurn();
+    }
+
+    public void changeTurn()
+    {
+        game.changeTurn();
+    }
     // Update is called once per frame
     void Update()
     {
