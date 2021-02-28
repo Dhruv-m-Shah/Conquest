@@ -122,11 +122,11 @@ public class networkController : MonoBehaviourPunCallbacks
         Debug.Log(message);
     }
 
-    public void sendEvent(Vector3Int pos, string obj, bool delete1 = false, bool permenant = false)
+    public void sendEvent(Vector3Int pos, string obj, bool delete1 = false, bool permenant = false, int direction = 0)
     {
         PhotonView photonView = PhotonView.Get(this);
-        if(delete1) photonView.RPC("syncPlayerBuild", RpcTarget.Others, pos.x, pos.y, obj, delete1);
-        else if(permenant) photonView.RPC("syncPlayerBuildPerm", RpcTarget.Others, pos.x, pos.y, pos.z, obj);
+        if(permenant) photonView.RPC("syncPlayerBuildPerm", RpcTarget.Others, pos.x, pos.y, pos.z, obj);
+        else photonView.RPC("syncPlayerBuild", RpcTarget.Others, pos.x, pos.y, obj, delete1, direction); 
     }
 
     public void changeTurn(Vector3Int prev, string curObject)
@@ -167,34 +167,48 @@ public class networkController : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
-    public void syncPlayerBuild(int xpos, int ypos, string obj, bool delete1)
+    public void syncPlayerBuild(int xpos, int ypos, string obj, bool delete1, int direction)
     {
         if (!GameObject.Find("map")) // Player has not entered game yet;
         {
+            Debug.Log("TESTTESTTESTTESTTESTTESTTEST");
             return;
         }
         tileMap tileControl = GameObject.Find("map").GetComponent<tileMap>();
+        Debug.Log("123abc");
+        Debug.Log(delete1);
         if (obj == "wall")
         {
-            tileControl.dWall(xprev, yprev);
-            tileControl.buildWall(xpos, ypos, false);
-            xprev = xpos;
-            yprev = ypos;
+            if (delete1)
+            {
+                tileControl.dWall(xpos, ypos, direction);
+            }
+            else
+            {
+                tileControl.buildWall(xpos, ypos, false, direction);
+            }
         }
         else if (obj == "road")
         {
-            tileControl.dRoad(xprev, yprev);
-            tileControl.buildRoad(xpos, ypos, false);
-            xprev = xpos;
-            yprev = ypos;
+            if (delete1)
+            {
+                tileControl.dRoad(xpos, ypos, direction);
+            }
+            else
+            {
+                tileControl.buildRoad(xpos, ypos, false, direction);
+            }
         }
         else if (obj == "house")
         {
-            tileControl.dHouse(xprev, yprev);
-            tileControl.buildHouse(xpos, ypos, false);
-            xprev = xpos;
-            yprev = ypos;
-            
+            if (delete1)
+            {
+                tileControl.dHouse(xpos, ypos, direction);
+            }
+            else
+            {
+                tileControl.buildHouse(xpos, ypos, false, direction);
+            }
         }
     }
 

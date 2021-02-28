@@ -26,7 +26,7 @@ public class tileMap : MonoBehaviour
         other.addPointOpponent(temp);
     }
 
-    public bool buildHouse(int topLeftX, int topLeftY, bool onClick=false)
+    public bool buildHouse(int topLeftX, int topLeftY, bool onClick=false, int direction = 0)
     {
         List<Vector3Int> temp1 = new List<Vector3Int>();
         bool flag = false;
@@ -37,7 +37,7 @@ public class tileMap : MonoBehaviour
                 for(int j = topLeftY; j < topLeftY + 3; j++)
                 {
                     Vector3Int p = new Vector3Int(i-k, j-k, k*5);
-                    Vector3 temp = RotatePointAroundPivot(new Vector3Int(i, j, k * 5), new Vector3Int(topLeftX, topLeftY, k * 5), new Vector3Int(0, 0, 90));
+                    Vector3 temp = RotatePointAroundPivot(new Vector3Int(i, j, k * 5), new Vector3Int(topLeftX, topLeftY, k * 5), new Vector3Int(0, 0, 90), direction);
                     Vector3Int rotated = new Vector3Int((int)temp.x - k, (int)temp.y - k, (int)temp.z);
                     temp1.Add(rotated);
                 }
@@ -72,7 +72,7 @@ public class tileMap : MonoBehaviour
         return !flag;
     }
 
-    public void dHouse(int topLeftX, int topLeftY )
+    public void dHouse(int topLeftX, int topLeftY, int direction = 0)
     {
         for (int k = 1; k < 3; k++)
         {
@@ -81,7 +81,7 @@ public class tileMap : MonoBehaviour
                 for (int j = topLeftY; j < topLeftY + 3; j++)
                 {
                     Vector3Int p = new Vector3Int(i - k, j - k, k * 5);
-                    Vector3 temp = RotatePointAroundPivot(new Vector3Int(i, j, k * 5), new Vector3Int(topLeftX, topLeftY, k * 5), new Vector3Int(0, 0, 90));
+                    Vector3 temp = RotatePointAroundPivot(new Vector3Int(i, j, k * 5), new Vector3Int(topLeftX, topLeftY, k * 5), new Vector3Int(0, 0, 90), direction);
                     Vector3Int rotated = new Vector3Int((int)temp.x - k, (int)temp.y - k, (int)temp.z);
                     if (other.inHashSet(rotated)) continue;
                     test.SetTile(rotated, null);
@@ -90,7 +90,7 @@ public class tileMap : MonoBehaviour
         }
     }
 
-    public bool buildRoad(int topLeftX, int topLeftY, bool onClick=false)
+    public bool buildRoad(int topLeftX, int topLeftY, bool onClick=false, int direction = 0)
     {
         List<Vector3Int> temp1 = new List<Vector3Int>();
         bool flag = false;
@@ -99,7 +99,7 @@ public class tileMap : MonoBehaviour
             for (int j = topLeftY; j < topLeftY + 2; j++)
             {
                 Vector3Int p = new Vector3Int(i-1, j-1, 4);
-                Vector3 temp = RotatePointAroundPivot(new Vector3Int(i, j, 4), new Vector3Int(topLeftX, topLeftY, 4), new Vector3Int(0, 0, 90));
+                Vector3 temp = RotatePointAroundPivot(new Vector3Int(i, j, 4), new Vector3Int(topLeftX, topLeftY, 4), new Vector3Int(0, 0, 90), direction);
                 Vector3Int rotated = new Vector3Int((int)temp.x, (int)temp.y, (int)temp.z);
                 temp1.Add(rotated);
             }
@@ -134,14 +134,14 @@ public class tileMap : MonoBehaviour
         return !flag;
     }
 
-    public void dRoad(int topLeftX, int topLeftY)
+    public void dRoad(int topLeftX, int topLeftY, int direction  = 0)
     {
         for (int i = topLeftX; i < topLeftX + 2; i++)
         {
             for (int j = topLeftY; j < topLeftY + 2; j++)
             {
                 Vector3Int p = new Vector3Int(i - 1, j - 1, 4);
-                Vector3 temp = RotatePointAroundPivot(new Vector3Int(i, j, 4), new Vector3Int(topLeftX, topLeftY, 4), new Vector3Int(0, 0, 90));
+                Vector3 temp = RotatePointAroundPivot(new Vector3Int(i, j, 4), new Vector3Int(topLeftX, topLeftY, 4), new Vector3Int(0, 0, 90), direction);
                 Vector3Int rotated = new Vector3Int((int)temp.x, (int)temp.y, (int)temp.z);
                 if (other.inHashSet(rotated)) continue;
                 test.SetTile(rotated, null);
@@ -149,7 +149,7 @@ public class tileMap : MonoBehaviour
         }
     }
 
-    public Vector3 RotatePointAroundPivot(Vector3 point, Vector3 pivot, Vector3 angles)
+    public Vector3 RotatePointAroundPivot(Vector3 point, Vector3 pivot, Vector3 angles, int direction = 0)
     {
         for (int i = 0; i < direction + 1; i++)
         {
@@ -160,7 +160,7 @@ public class tileMap : MonoBehaviour
         return point; // return it
     }
 
-    public bool buildWall(int topLeftX, int topLeftY, bool onClick=false, bool redColor = false)
+    public bool buildWall(int topLeftX, int topLeftY, bool onClick=false, int direction = 0)
     {
         List<Vector3Int> temp1 = new List<Vector3Int>();
         bool flag = false;
@@ -169,7 +169,7 @@ public class tileMap : MonoBehaviour
             for(int j = topLeftY; j < topLeftY + 2; j++)
             {
                 Vector3Int p = new Vector3Int(topLeftX-k, j-k, k * 5);
-                Vector3 temp = RotatePointAroundPivot(new Vector3Int(topLeftX, j, k*5), new Vector3Int(topLeftX, topLeftY, k*5), new Vector3Int(0, 0, 90));
+                Vector3 temp = RotatePointAroundPivot(new Vector3Int(topLeftX, j, k*5), new Vector3Int(topLeftX, topLeftY, k*5), new Vector3Int(0, 0, 90), direction);
                 Vector3Int rotated = new Vector3Int((int)temp.x-k, (int)temp.y-k, (int)temp.z);
                 temp1.Add(rotated);
             }
@@ -204,14 +204,14 @@ public class tileMap : MonoBehaviour
         return !flag;
     }
     //test
-    public void dWall(int topLeftX, int topLeftY)
+    public void dWall(int topLeftX, int topLeftY, int direction = 0)
     {
         for (int k = 1; k < 3; k++)
         {
             for (int j = topLeftY; j < topLeftY + 2; j++)
             {
                 Vector3Int p = new Vector3Int(topLeftX - k, j - k, k * 5);
-                Vector3 temp = RotatePointAroundPivot(new Vector3Int(topLeftX, j, k * 5), new Vector3Int(topLeftX, topLeftY, k * 5), new Vector3Int(0, 0, 90));
+                Vector3 temp = RotatePointAroundPivot(new Vector3Int(topLeftX, j, k * 5), new Vector3Int(topLeftX, topLeftY, k * 5), new Vector3Int(0, 0, 90), direction);
                 Vector3Int rotated = new Vector3Int((int)temp.x - k, (int)temp.y - k, (int)temp.z);
                 if (other.inHashSet(rotated)) continue;
                 test.SetTile(rotated, null);
@@ -292,15 +292,15 @@ public class tileMap : MonoBehaviour
     {
         if(curObject == "wall")
         {
-            return buildWall(xpos, ypos, onClick);
+            return buildWall(xpos, ypos, onClick, direction);
         }
         else if(curObject == "road")
         {
-            return buildRoad(xpos, ypos, onClick);
+            return buildRoad(xpos, ypos, onClick, direction);
         }
         else if(curObject == "house")
         {
-            return buildHouse(xpos, ypos, onClick);
+            return buildHouse(xpos, ypos, onClick, direction);
         }
         else
         {
@@ -314,30 +314,30 @@ public class tileMap : MonoBehaviour
         {
             if (curObject == "wall")
             {
-                dWall(xpos, ypos);
+                dWall(xpos, ypos, direction);
             }
             else if (curObject == "road")
             {
-                dRoad(xpos, ypos);
+                dRoad(xpos, ypos, direction);
             }
             else if (curObject == "house")
             {
-                dHouse(xpos, ypos);
+                dHouse(xpos, ypos, direction);
             }
         }
         else
         {
             if (sync == "wall")
             {
-                dWall(xpos, ypos);
+                dWall(xpos, ypos, direction);
             }
             else if (sync == "road")
             {
-                dRoad(xpos, ypos);
+                dRoad(xpos, ypos, direction);
             }
             else if (sync == "house")
             {
-                dHouse(xpos, ypos);
+                dHouse(xpos, ypos, direction);
             }
         }
     }
@@ -351,10 +351,11 @@ public class tileMap : MonoBehaviour
         if (Input.GetKeyDown("space"))
         {
             destroyObject(prev.x, prev.y);
+            networkControl.sendEvent(prev, curObject, true, false, direction);
             direction = (direction + 1) % 4;
         }
 
-        Vector3 test123 = RotatePointAroundPivot(new Vector3Int(1, 2, 0), new Vector3Int(0, 0, 0), new Vector3Int(0, 0, 90));
+        Vector3 test123 = RotatePointAroundPivot(new Vector3Int(1, 2, 0), new Vector3Int(0, 0, 0), new Vector3Int(0, 0, 90), direction);
         Debug.Log(test123);
         Vector3 point = GameObject.Find("Main Camera").GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition);
         Vector3Int selectedTile = test.WorldToCell(point);
@@ -378,12 +379,11 @@ public class tileMap : MonoBehaviour
                 {
                     if (x == selectedTile.x && y == selectedTile.y)
                     {
-                        
-                        destroyObject(prev.x, prev.y);
-                        object[] eventData = new object[] {x, y, buildObject(x, y), curObject};
                         networkControl = GameObject.Find("networkControl").GetComponent<networkController>();
-                        networkControl.sendEvent(prev, curObject, true);
-                        networkControl.sendEvent(selectedTile, curObject, false);
+                        destroyObject(prev.x, prev.y);
+                        networkControl.sendEvent(prev, curObject, true, false, direction);
+                        buildObject(x, y);
+                        networkControl.sendEvent(selectedTile, curObject, false, false, direction);
                     }
                 }
             }
