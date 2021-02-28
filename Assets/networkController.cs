@@ -126,7 +126,7 @@ public class networkController : MonoBehaviourPunCallbacks
     {
         PhotonView photonView = PhotonView.Get(this);
         if(delete1) photonView.RPC("syncPlayerBuild", RpcTarget.Others, pos.x, pos.y, obj, delete1);
-        else if(permenant) photonView.RPC("syncPlayerBuildPerm", RpcTarget.Others, pos.x, pos.y, pos.z);
+        else if(permenant) photonView.RPC("syncPlayerBuildPerm", RpcTarget.Others, pos.x, pos.y, pos.z, obj);
     }
 
     public void changeTurn(Vector3Int prev, string curObject)
@@ -199,7 +199,7 @@ public class networkController : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
-    public void syncPlayerBuildPerm(int xpos, int ypos, int zpos)
+    public void syncPlayerBuildPerm(int xpos, int ypos, int zpos, string obj)
     {
         tileMap tileControl = GameObject.Find("map").GetComponent<tileMap>();
         tileControl.addTileOpponent(xpos, ypos, zpos);

@@ -112,7 +112,11 @@ public class tileMap : MonoBehaviour
         {
             foreach (Vector3Int part in temp1)
             {
-                if (onClick) other.addPoint(part);
+                if (onClick)
+                {
+                    other.addPoint(part);
+                    networkControl.sendEvent(part, curObject, false, true);
+                }
                 test.SetTile(part, road);
             }
 
@@ -178,7 +182,11 @@ public class tileMap : MonoBehaviour
         {
             foreach(Vector3Int part in temp1)
             {
-                if (onClick) other.addPoint(part);
+                if (onClick)
+                {
+                    other.addPoint(part);
+                    networkControl.sendEvent(part, curObject, false, true);
+                }
                 test.SetTile(part, wall);
             }
             
@@ -358,7 +366,7 @@ public class tileMap : MonoBehaviour
         {
             if (buildObject(selectedTile.x, selectedTile.y, true))
             {
-                networkControl.sendEvent(selectedTile, curObject, false);
+                networkControl.sendEvent(selectedTile, curObject, false, true);
             }
 
         }
