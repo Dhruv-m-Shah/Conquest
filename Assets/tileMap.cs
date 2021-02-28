@@ -54,7 +54,6 @@ public class tileMap : MonoBehaviour
                 if (onClick)
                 {
                     other.addPoint(part);
-                    networkControl.sendEvent(part, curObject, false, true);
                 }
                 test.SetTile(part, brick);
             }
@@ -115,7 +114,6 @@ public class tileMap : MonoBehaviour
                 if (onClick)
                 {
                     other.addPoint(part);
-                    networkControl.sendEvent(part, curObject, false, true);
                 }
                 test.SetTile(part, road);
             }
@@ -185,7 +183,6 @@ public class tileMap : MonoBehaviour
                 if (onClick)
                 {
                     other.addPoint(part);
-                    networkControl.sendEvent(part, curObject, false, true);
                 }
                 test.SetTile(part, wall);
             }

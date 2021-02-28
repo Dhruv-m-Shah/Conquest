@@ -125,8 +125,7 @@ public class networkController : MonoBehaviourPunCallbacks
     public void sendEvent(Vector3Int pos, string obj, bool delete1 = false, bool permenant = false, int direction = 0)
     {
         PhotonView photonView = PhotonView.Get(this);
-        if(permenant) photonView.RPC("syncPlayerBuildPerm", RpcTarget.Others, pos.x, pos.y, pos.z, obj);
-        else photonView.RPC("syncPlayerBuild", RpcTarget.Others, pos.x, pos.y, obj, delete1, direction); 
+        photonView.RPC("syncPlayerBuild", RpcTarget.Others, pos.x, pos.y, obj, delete1, direction, permenant); 
     }
 
     public void changeTurn(Vector3Int prev, string curObject)
@@ -167,7 +166,7 @@ public class networkController : MonoBehaviourPunCallbacks
     }
 
     [PunRPC]
-    public void syncPlayerBuild(int xpos, int ypos, string obj, bool delete1, int direction)
+    public void syncPlayerBuild(int xpos, int ypos, string obj, bool delete1, int direction, bool perm)
     {
         if (!GameObject.Find("map")) // Player has not entered game yet;
         {
@@ -185,7 +184,7 @@ public class networkController : MonoBehaviourPunCallbacks
             }
             else
             {
-                tileControl.buildWall(xpos, ypos, false, direction);
+                tileControl.buildWall(xpos, ypos, perm, direction);
             }
         }
         else if (obj == "road")
@@ -196,7 +195,7 @@ public class networkController : MonoBehaviourPunCallbacks
             }
             else
             {
-                tileControl.buildRoad(xpos, ypos, false, direction);
+                tileControl.buildRoad(xpos, ypos, perm, direction);
             }
         }
         else if (obj == "house")
@@ -207,7 +206,7 @@ public class networkController : MonoBehaviourPunCallbacks
             }
             else
             {
-                tileControl.buildHouse(xpos, ypos, false, direction);
+                tileControl.buildHouse(xpos, ypos, perm, direction);
             }
         }
     }
