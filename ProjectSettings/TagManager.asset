@@ -20,6 +20,7 @@ TagManager:
   - lobbyName1
   - lobbyName2
   - endTurn
+  - healthBar
   layers:
   - Default
   - TransparentFX

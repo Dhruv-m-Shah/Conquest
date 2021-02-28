@@ -166,6 +166,17 @@ public class playerController : MonoBehaviour
     {
         game.changeTurn();
     }
+
+    public void changeHealthPlayer(int decrease) 
+    {
+        playerStats stats = GameObject.FindGameObjectWithTag("healthBar").GetComponent<playerStats>();
+        stats.changeHealthUI(decrease);
+    }
+
+    public void changeHealthOpponent(int decrease)
+    {
+
+    }
     // Update is called once per frame
     void Update()
     {
