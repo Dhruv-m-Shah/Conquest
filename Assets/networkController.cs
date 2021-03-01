@@ -139,6 +139,7 @@ public class networkController : MonoBehaviourPunCallbacks
         PhotonView photonView = PhotonView.Get(this);
         photonView.RPC("syncPlayerDropdownNetwork", RpcTarget.Others, value);
     }
+
     public void startGame()
     {
         PhotonView photonView = PhotonView.Get(this);
@@ -170,12 +171,9 @@ public class networkController : MonoBehaviourPunCallbacks
     {
         if (!GameObject.Find("map")) // Player has not entered game yet;
         {
-            Debug.Log("TESTTESTTESTTESTTESTTESTTEST");
             return;
         }
         tileMap tileControl = GameObject.Find("map").GetComponent<tileMap>();
-        Debug.Log("123abc");
-        Debug.Log(delete1);
         if (obj == "wall")
         {
             if (delete1)

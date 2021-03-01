@@ -200,7 +200,7 @@ public class tileMap : MonoBehaviour
         }
         return !flag;
     }
-    //test
+
     public void dWall(int topLeftX, int topLeftY, int direction = 0)
     {
         for (int k = 1; k < 3; k++)
@@ -214,6 +214,13 @@ public class tileMap : MonoBehaviour
                 test.SetTile(rotated, null);
             }
         }
+    }
+
+    public void updateMaterialUI(string material, int value)
+    {
+        Debug.Log(material);
+        Text textVal = GameObject.Find(material).GetComponent<Text>();
+        textVal.text = (System.Convert.ToInt32(textVal.text) - value).ToString();
     }
 
     void showBuildWindow()
@@ -338,6 +345,16 @@ public class tileMap : MonoBehaviour
             }
         }
     }
+
+    bool checkMaterials(string curObject)
+    {
+        if (other.enoughMaterials(curObject))
+        {
+            other.decreaseMaterials(curObject);
+            return true;
+        }
+        return false;
+    }
     // Update is called once per frame.
     void Update()
     {
@@ -353,7 +370,6 @@ public class tileMap : MonoBehaviour
         }
 
         Vector3 test123 = RotatePointAroundPivot(new Vector3Int(1, 2, 0), new Vector3Int(0, 0, 0), new Vector3Int(0, 0, 90), direction);
-        Debug.Log(test123);
         Vector3 point = GameObject.Find("Main Camera").GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition);
         Vector3Int selectedTile = test.WorldToCell(point);
         selectedTile.z += 10;
@@ -362,11 +378,13 @@ public class tileMap : MonoBehaviour
         test.SetTileFlags(selectedTile, TileFlags.None);
         if (Input.GetMouseButtonDown(1))
         {
-            if (buildObject(selectedTile.x, selectedTile.y, true))
+            if (curObject == "house" || checkMaterials(curObject)) //If curobject is house, no resources are used, and no need to checl.
             {
-                networkControl.sendEvent(selectedTile, curObject, false, true);
+                if (buildObject(selectedTile.x, selectedTile.y, true))
+                {
+                    networkControl.sendEvent(selectedTile, curObject, false, true);
+                }
             }
-
         }
         if (selectedTile.x < 50 && selectedTile.x >= 0 && selectedTile.y < 50 && selectedTile.y >= 0)
         {
