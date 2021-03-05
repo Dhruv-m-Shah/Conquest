@@ -216,6 +216,70 @@ public class networkController : MonoBehaviourPunCallbacks
         tileControl.addTileOpponent(xpos, ypos, zpos);
     }
 
+    string serializeVectorList(List<Vector3Int> blocks)
+    {
+        string serializeStr = "";
+        foreach (Vector3Int part in blocks)
+        {
+            serializeStr += part.x.ToString() + ",";
+            serializeStr += part.y.ToString() + ",";
+            serializeStr += part.z.ToString() + ",";
+        }
+        return serializeStr;
+    }
+
+    public void addBlock(string blockType, List<Vector3Int> blocks)
+    {
+        PhotonView photonView = PhotonView.Get(this);
+        string serialized = serializeVectorList(blocks);
+        photonView.RPC("addBlockNetwork", RpcTarget.Others, blockType, serialized);
+    }
+
+    public List<Vector3Int> deserializeString(string serializedStr)
+    {
+        int count = 0;
+        int x = 0;
+        int y = 0;
+        int z = 0;
+        List<Vector3Int> newList = new List<Vector3Int>();
+        for(int i = 0; i < serializedStr.Length; i++)
+        {
+            if(serializedStr[i] == ',')
+            {
+                count += 1;
+                if (count % 3 == 0)
+                {
+                    count = 0;
+                    newList.Add(new Vector3Int(x, y, z));
+                }
+            }
+            else
+            {
+                if (count == 0)
+                {
+                    x = System.Convert.ToInt32(serializedStr[i]);
+                }
+                if (count == 1)
+                {
+                    y = System.Convert.ToInt32(serializedStr[i]);
+                }
+                if (count == 2)
+                {
+                    z = System.Convert.ToInt32(serializedStr[i]);
+                }
+            }
+        }
+        return newList;
+    }
+
+    [PunRPC]
+    public void addBlockNetwork(string blockType, string serializedStr)
+    {
+        tileMap tileControl = GameObject.Find("map").GetComponent<tileMap>();
+        List<Vector3Int> blocks = deserializeString(serializedStr);
+        reference.addBlock(blockType, blocks, "opponent");
+    } 
+
     // Update is called once per frame
     void Update()
    {

@@ -2,6 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+public class Block
+{
+    List<Vector3Int> positions;
+    string blockType;
+    public Block(string blockType, List<Vector3Int> positions)
+    {
+        this.positions = positions;
+        this.blockType = blockType;
+    }
+}
+
 public class Game
 {
     Players player = null;
@@ -32,6 +44,7 @@ public class Players
     int stone = 100;
     bool isHost = false;
     bool turn;
+    List<Block> blocks;
     // Base stats;
     HashSet<Vector3Int> taken;
     public bool getTurn()
@@ -50,6 +63,7 @@ public class Players
         materials.Add("food", 100);
         materials.Add("gold", 100);
         materials.Add("stone", 100);
+        blocks = new List<Block>();
     }
     public bool inHashSet(Vector3Int point)
     {
@@ -65,7 +79,6 @@ public class Players
     {
         return this.playerId;
     }
-    
     public void setHost()
     {
         this.isHost = true;
@@ -75,7 +88,6 @@ public class Players
     {
         return this.isHost;
     }
-
     public int getMaterialValue(string material) {
         if (!materials.ContainsKey(material))
         {
@@ -86,10 +98,13 @@ public class Players
             return materials[material];
         }
     }
-
     public void decreaseMaterials(string resource, int value)
     {
         materials[resource] -= value;
+    }
+    public void addBlock(Block blockObj)
+    {
+        blocks.Add(blockObj);
     }
 }
 
@@ -233,6 +248,19 @@ public class playerController : MonoBehaviour
            
             player.decreaseMaterials(kvp.Key, kvp.Value);
             tiles.updateMaterialUI(kvp.Key, kvp.Value);
+        }
+    }
+
+    public void addBlock(string blockType, List<Vector3Int> positions, string person) 
+    {
+        Block newBlock = new Block(blockType, positions);
+        if (person == "player")
+        {
+            player.addBlock(newBlock);
+        }
+        else
+        {
+            opponent.addBlock(newBlock);
         }
     }
 

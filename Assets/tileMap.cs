@@ -26,7 +26,7 @@ public class tileMap : MonoBehaviour
         other.addPointOpponent(temp);
     }
 
-    public bool buildHouse(int topLeftX, int topLeftY, bool onClick=false, int direction = 0)
+    public bool buildHouse(int topLeftX, int topLeftY, bool onClick=false, int direction = 0, string whichPlayer = "player")
     {
         List<Vector3Int> temp1 = new List<Vector3Int>();
         bool flag = false;
@@ -57,6 +57,9 @@ public class tileMap : MonoBehaviour
                 }
                 test.SetTile(part, brick);
             }
+            other.addBlock("house", temp1, whichPlayer);
+            if(whichPlayer == "player") networkControl.addBlock("house", temp1);
+
         }
         else
         {
@@ -89,7 +92,7 @@ public class tileMap : MonoBehaviour
         }
     }
 
-    public bool buildRoad(int topLeftX, int topLeftY, bool onClick=false, int direction = 0)
+    public bool buildRoad(int topLeftX, int topLeftY, bool onClick=false, int direction = 0, string whichPlayer = "player")
     {
         List<Vector3Int> temp1 = new List<Vector3Int>();
         bool flag = false;
@@ -117,7 +120,7 @@ public class tileMap : MonoBehaviour
                 }
                 test.SetTile(part, road);
             }
-
+            other.addBlock("house", temp1, whichPlayer);
         }
         else
         {
@@ -158,7 +161,7 @@ public class tileMap : MonoBehaviour
         return point; // return it
     }
 
-    public bool buildWall(int topLeftX, int topLeftY, bool onClick=false, int direction = 0)
+    public bool buildWall(int topLeftX, int topLeftY, bool onClick=false, int direction = 0, string whichPlayer = "player")
     {
         List<Vector3Int> temp1 = new List<Vector3Int>();
         bool flag = false;
@@ -186,7 +189,7 @@ public class tileMap : MonoBehaviour
                 }
                 test.SetTile(part, wall);
             }
-            
+            other.addBlock("house", temp1, whichPlayer);
         }
         else
         {
